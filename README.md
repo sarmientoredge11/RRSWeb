@@ -73,7 +73,7 @@ Designed around a **matte black (`#0a0a0a`)** and **crimson red (`#dc2626`)** pa
 | :--- | :--- | :--- | :--- |
 | **BAI Passport Tracking System** | HCI Prototype | HTML, CSS, JavaScript | [Live](https://bainary-empire.github.io) · [GitHub](https://github.com/bainary-empire/bainary-empire.github.io) |
 | **HOPE ERP Platform** | Full-Stack ERP | React 19, TypeScript, Tailwind CSS, Supabase | [Live](https://baikolano-website-sandy.vercel.app) · [GitHub](https://github.com/Pampanga-West/baikolano-website) |
-| **The Search Optimizer (Trie Auto-Complete)** | Algorithms | Python, Trie / DFS, NumPy, Faker | [GitHub](https://github.com/sarmientoredge11) |
+| **The Search Optimizer (Trie Auto-Complete)** | Algorithms | Python, Trie / DFS, NumPy, Faker | [GitHub](https://github.com/sarmientoredge11/Search_Optimizer_DAA) |
 
 </details>
 
