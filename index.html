@@ -24,6 +24,37 @@
   </script>
 </head>
 <body>
+  <!-- Subtle Flowing Background Text -->
+  <div class="bg-flow" aria-hidden="true">
+    <div class="bg-flow-row">
+      <div class="bg-flow-track">
+        <span>JAVA <em class="bg-dot">&bull;</em> JAVASCRIPT <em class="bg-dot">&bull;</em> SQL <em class="bg-dot">&bull;</em> HTML5 <em class="bg-dot">&bull;</em> CSS3 <em class="bg-dot">&bull;</em> PYTHON <em class="bg-dot">&bull;</em> TYPESCRIPT <em class="bg-dot">&bull;</em> REACT <em class="bg-dot">&bull;</em> SUPABASE <em class="bg-dot">&bull;</em></span>
+        <span>JAVA <em class="bg-dot">&bull;</em> JAVASCRIPT <em class="bg-dot">&bull;</em> SQL <em class="bg-dot">&bull;</em> HTML5 <em class="bg-dot">&bull;</em> CSS3 <em class="bg-dot">&bull;</em> PYTHON <em class="bg-dot">&bull;</em> TYPESCRIPT <em class="bg-dot">&bull;</em> REACT <em class="bg-dot">&bull;</em> SUPABASE <em class="bg-dot">&bull;</em></span>
+      </div>
+    </div>
+
+    <div class="bg-flow-row reverse">
+      <div class="bg-flow-track">
+        <span>COMPUTER SCIENCE <em class="bg-dot">&bull;</em> DATA STRUCTURES <em class="bg-dot">&bull;</em> ALGORITHMS <em class="bg-dot">&bull;</em> TRIE / PREFIX TREE <em class="bg-dot">&bull;</em> DEPTH-FIRST SEARCH <em class="bg-dot">&bull;</em> PROBLEM SOLVING <em class="bg-dot">&bull;</em></span>
+        <span>COMPUTER SCIENCE <em class="bg-dot">&bull;</em> DATA STRUCTURES <em class="bg-dot">&bull;</em> ALGORITHMS <em class="bg-dot">&bull;</em> TRIE / PREFIX TREE <em class="bg-dot">&bull;</em> DEPTH-FIRST SEARCH <em class="bg-dot">&bull;</em> PROBLEM SOLVING <em class="bg-dot">&bull;</em></span>
+      </div>
+    </div>
+
+    <div class="bg-flow-row slow">
+      <div class="bg-flow-track">
+        <span>RELATIONAL DATABASES <em class="bg-dot">&bull;</em> ORACLE CLOUD INFRASTRUCTURE <em class="bg-dot">&bull;</em> AI FOUNDATIONS <em class="bg-dot">&bull;</em> HUMAN-COMPUTER INTERACTION <em class="bg-dot">&bull;</em> QUALITY ASSURANCE <em class="bg-dot">&bull;</em></span>
+        <span>RELATIONAL DATABASES <em class="bg-dot">&bull;</em> ORACLE CLOUD INFRASTRUCTURE <em class="bg-dot">&bull;</em> AI FOUNDATIONS <em class="bg-dot">&bull;</em> HUMAN-COMPUTER INTERACTION <em class="bg-dot">&bull;</em> QUALITY ASSURANCE <em class="bg-dot">&bull;</em></span>
+      </div>
+    </div>
+
+    <div class="bg-flow-row reverse slower">
+      <div class="bg-flow-track">
+        <span>REDGE SARMIENTO <em class="bg-dot">&bull;</em> NEW ERA UNIVERSITY <em class="bg-dot">&bull;</em> CONTINUOUS LEARNING <em class="bg-dot">&bull;</em> CLEAN ARCHITECTURE <em class="bg-dot">&bull;</em> EFFICIENT SOLUTIONS <em class="bg-dot">&bull;</em></span>
+        <span>REDGE SARMIENTO <em class="bg-dot">&bull;</em> NEW ERA UNIVERSITY <em class="bg-dot">&bull;</em> CONTINUOUS LEARNING <em class="bg-dot">&bull;</em> CLEAN ARCHITECTURE <em class="bg-dot">&bull;</em> EFFICIENT SOLUTIONS <em class="bg-dot">&bull;</em></span>
+      </div>
+    </div>
+  </div>
+
   <header class="site-header">
     <nav class="nav container" aria-label="Primary Navigation">
       <a href="#top" class="brand" aria-label="Home">
@@ -84,14 +115,22 @@
         efficient solutions.
       </p>
       <div class="hero-actions">
-        <a href="#contact" class="btn btn-primary">Get in Touch</a>
-        <a href="#projects" class="btn btn-secondary">View Projects</a>
+        <a href="#contact" class="btn btn-primary">
+          <span>Get in Touch</span>
+          <span class="btn-icon" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="#projects" class="btn btn-secondary">
+          <span>View Projects</span>
+        </a>
         <a
           href="https://github.com/sarmientoredge11"
           target="_blank"
           rel="noopener noreferrer"
           class="btn btn-secondary"
-        >GitHub &nearr;</a>
+        >
+          <span>GitHub</span>
+          <span class="btn-arrow" aria-hidden="true">&nearr;</span>
+        </a>
       </div>
     </section>
 
@@ -113,29 +152,36 @@
     <!-- Skills Section -->
     <section id="skills" class="section container">
       <div class="section-header">
-        <span class="section-index">02</span>
-        <h2>Skill Sets</h2>
+        <div class="section-title-group">
+          <span class="section-index">02</span>
+          <h2>Skill Sets</h2>
+        </div>
+        <span class="section-hint">Click a skill to highlight matching projects</span>
       </div>
       <div class="skills-grid">
         <div class="card skill-group">
           <h3>Programming</h3>
           <ul class="pill-list">
-            <li class="pill">Java</li>
-            <li class="pill">JavaScript</li>
+            <li><button type="button" class="pill" data-skill="Java">Java</button></li>
+            <li><button type="button" class="pill" data-skill="JavaScript">JavaScript</button></li>
+            <li><button type="button" class="pill" data-skill="Python">Python</button></li>
+            <li><button type="button" class="pill" data-skill="TypeScript">TypeScript</button></li>
           </ul>
         </div>
         <div class="card skill-group">
-          <h3>Databases</h3>
+          <h3>Databases &amp; Backend</h3>
           <ul class="pill-list">
-            <li class="pill">SQL</li>
+            <li><button type="button" class="pill" data-skill="SQL">SQL</button></li>
+            <li><button type="button" class="pill" data-skill="Supabase">Supabase</button></li>
           </ul>
         </div>
         <div class="card skill-group">
-          <h3>Tools &amp; Markup</h3>
+          <h3>Tools &amp; Frontend</h3>
           <ul class="pill-list">
-            <li class="pill">Lucidchart</li>
-            <li class="pill">Eclipse</li>
-            <li class="pill">HTML</li>
+            <li><button type="button" class="pill" data-skill="HTML">HTML</button></li>
+            <li><button type="button" class="pill" data-skill="React">React</button></li>
+            <li><button type="button" class="pill" data-skill="Lucidchart">Lucidchart</button></li>
+            <li><button type="button" class="pill" data-skill="Eclipse">Eclipse</button></li>
           </ul>
         </div>
       </div>
@@ -148,48 +194,92 @@
         <h2>Certifications</h2>
       </div>
       <div class="cert-list">
-        <article class="card cert-item">
+        <a
+          href="https://courses.cognitiveclass.ai/certificates/a8bb5e3a79654b85809200a07765e8d6"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="card cert-item"
+          aria-label="Verify SQL and Relational Databases 101 Certificate from IBM"
+        >
           <div class="cert-info">
             <h3>SQL and Relational Databases 101</h3>
             <p class="cert-issuer">IBM</p>
           </div>
-          <span class="mono-tag">2025</span>
-        </article>
+          <div class="cert-meta">
+            <span class="mono-tag">2025</span>
+            <span class="cert-verify">Verify <span class="btn-arrow" aria-hidden="true">&nearr;</span></span>
+          </div>
+        </a>
 
-        <article class="card cert-item">
+        <a
+          href="https://catalog-education.oracle.com/pls/certview/sharebadge?id=8C3385B9AF000A12FCBBD73397E66368F5DD470ECC4A5A07C4A9AB1455A93B54"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="card cert-item"
+          aria-label="Verify Oracle Data Platform 2025 Certified Foundations Associate Badge"
+        >
           <div class="cert-info">
             <h3>Oracle Data Platform 2025 Certified Foundations Associate</h3>
             <p class="cert-issuer">Oracle</p>
           </div>
-          <span class="mono-tag">2025</span>
-        </article>
+          <div class="cert-meta">
+            <span class="mono-tag">2025</span>
+            <span class="cert-verify">Verify <span class="btn-arrow" aria-hidden="true">&nearr;</span></span>
+          </div>
+        </a>
 
-        <article class="card cert-item">
+        <a
+          href="https://catalog-education.oracle.com/pls/certview/sharebadge?id=A0238219C4546EBD24395428B2508DDACD5883DE4E2CF0B9C9461F08BE58050F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="card cert-item"
+          aria-label="Verify Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate Badge"
+        >
           <div class="cert-info">
             <h3>Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate</h3>
             <p class="cert-issuer">Oracle</p>
           </div>
-          <span class="mono-tag">2025</span>
-        </article>
+          <div class="cert-meta">
+            <span class="mono-tag">2025</span>
+            <span class="cert-verify">Verify <span class="btn-arrow" aria-hidden="true">&nearr;</span></span>
+          </div>
+        </a>
 
-        <article class="card cert-item">
+        <a
+          href="https://catalog-education.oracle.com/pls/certview/sharebadge?id=00E8A5491B5059FA8DF88FF07D2C7561390FDA6C7350D1EEE1C5592DF8C011FA"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="card cert-item"
+          aria-label="Verify Oracle Cloud Infrastructure 2025 Certified Foundations Associate Badge"
+        >
           <div class="cert-info">
             <h3>Oracle Cloud Infrastructure 2025 Certified Foundations Associate</h3>
             <p class="cert-issuer">Oracle</p>
           </div>
-          <span class="mono-tag">2025</span>
-        </article>
+          <div class="cert-meta">
+            <span class="mono-tag">2025</span>
+            <span class="cert-verify">Verify <span class="btn-arrow" aria-hidden="true">&nearr;</span></span>
+          </div>
+        </a>
       </div>
     </section>
 
     <!-- Projects Section -->
     <section id="projects" class="section container">
-      <div class="section-header">
-        <span class="section-index">04</span>
-        <h2>Projects</h2>
+      <div class="section-header section-header-wrap">
+        <div class="section-title-group">
+          <span class="section-index">04</span>
+          <h2>Projects</h2>
+        </div>
+        <div class="filter-group" role="group" aria-label="Filter projects by category">
+          <button type="button" class="filter-btn is-active" data-filter="all">All</button>
+          <button type="button" class="filter-btn" data-filter="hci">HCI</button>
+          <button type="button" class="filter-btn" data-filter="erp">Full-Stack</button>
+          <button type="button" class="filter-btn" data-filter="algorithms">Algorithms</button>
+        </div>
       </div>
       <div class="projects-grid">
-        <article class="card project-card">
+        <article class="card project-card" data-category="hci" data-tech="HTML CSS JavaScript HCI">
           <div class="project-top">
             <span class="mono-label">HCI Prototype</span>
             <div class="project-links">
@@ -199,14 +289,14 @@
                 rel="noopener noreferrer"
                 class="project-link"
                 aria-label="View BAI Passport Tracking System Live Demo"
-              >Live &nearr;</a>
+              >Live <span class="btn-arrow" aria-hidden="true">&nearr;</span></a>
               <a
                 href="https://github.com/bainary-empire/bainary-empire.github.io"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="project-link"
                 aria-label="View BAI Passport Tracking System on GitHub"
-              >GitHub &nearr;</a>
+              >GitHub <span class="btn-arrow" aria-hidden="true">&nearr;</span></a>
             </div>
           </div>
           <h3>BAI Passport Tracking System</h3>
@@ -223,7 +313,7 @@
           </ul>
         </article>
 
-        <article class="card project-card">
+        <article class="card project-card" data-category="erp" data-tech="React TypeScript Tailwind CSS Supabase SQL JavaScript HTML">
           <div class="project-top">
             <span class="mono-label">Full-Stack ERP</span>
             <div class="project-links">
@@ -233,14 +323,14 @@
                 rel="noopener noreferrer"
                 class="project-link"
                 aria-label="View HOPE ERP Platform Live Demo"
-              >Live &nearr;</a>
+              >Live <span class="btn-arrow" aria-hidden="true">&nearr;</span></a>
               <a
                 href="https://github.com/Pampanga-West/baikolano-website"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="project-link"
                 aria-label="View HOPE ERP Platform on GitHub"
-              >GitHub &nearr;</a>
+              >GitHub <span class="btn-arrow" aria-hidden="true">&nearr;</span></a>
             </div>
           </div>
           <h3>HOPE ERP Platform</h3>
@@ -257,17 +347,17 @@
           </ul>
         </article>
 
-        <article class="card project-card">
+        <article class="card project-card" data-category="algorithms" data-tech="Python Trie DFS NumPy Faker">
           <div class="project-top">
             <span class="mono-label">Algorithms</span>
             <div class="project-links">
               <a
-                href="https://github.com/sarmientoredge11"
+                href="https://github.com/sarmientoredge11/Search_Optimizer_DAA"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="project-link"
                 aria-label="View The Search Optimizer on GitHub"
-              >GitHub &nearr;</a>
+              >GitHub <span class="btn-arrow" aria-hidden="true">&nearr;</span></a>
             </div>
           </div>
           <h3>The Search Optimizer (Trie Auto-Complete)</h3>
@@ -298,29 +388,57 @@
           opportunities. Feel free to reach out directly via email.
         </p>
         <div class="contact-actions">
-          <a href="mailto:sarmientoredge11@gmail.com" class="btn btn-primary">
-            sarmientoredge11@gmail.com
-          </a>
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-primary"
             id="copy-email-btn"
             data-email="sarmientoredge11@gmail.com"
           >
-            Copy Email
+            <span id="copy-email-text">Copy sarmientoredge11@gmail.com</span>
           </button>
+          <a
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=sarmientoredge11@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary"
+          >
+            <span>Compose in Gmail</span>
+            <span class="btn-arrow" aria-hidden="true">&nearr;</span>
+          </a>
+          <a
+            href="mailto:sarmientoredge11@gmail.com"
+            class="btn btn-secondary"
+          >
+            <span>Open Mail App</span>
+          </a>
         </div>
         <div class="social-links">
           <a
             href="https://github.com/sarmientoredge11"
             target="_blank"
             rel="noopener noreferrer"
+            class="social-pill"
             aria-label="GitHub Profile"
-          >github.com/sarmientoredge11 &nearr;</a>
+          >
+            <span>github.com/sarmientoredge11</span>
+            <span class="btn-arrow" aria-hidden="true">&nearr;</span>
+          </a>
         </div>
       </div>
     </section>
   </main>
+
+  <button
+    type="button"
+    class="back-to-top"
+    id="back-to-top"
+    aria-label="Scroll back to top"
+    title="Back to top"
+  >
+    &uarr;
+  </button>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <footer class="site-footer container">
     <p>&copy; 2026 Redge Rainier D. Sarmiento</p>
