@@ -153,3 +153,91 @@ if ("IntersectionObserver" in window && navLinks) {
 
   sections.forEach((sec) => observer.observe(sec));
 }
+
+// Randomly Cycling Slanted Background Words (matched-size pools prevent layout shift)
+const wordPools = {
+  banner: {
+    sm: ["RRDS", "JAVA", "SQL", "HTML", "CSS3", "HCI", "DAA"],
+    md: [
+      "DATABASE SYSTEMS",
+      "ORACLE CERTIFIED",
+      "DATA STRUCTURES",
+      "SEARCH OPTIMIZER",
+      "HOPE ERP PLATFORM",
+      "NEW ERA UNIVERSITY"
+    ],
+    lg: [
+      "REDGE RAINIER D. SARMIENTO",
+      "COMPUTER SCIENCE & ALGORITHMS",
+      "SOFTWARE DEVELOPMENT & QA",
+      "HUMAN-COMPUTER INTERACTION",
+      "CONTINUOUS LEARNING & CODE",
+      "EFFICIENT SOFTWARE DESIGN"
+    ]
+  },
+  sub: {
+    md: [
+      "RRDS // REDGE SARMIENTO",
+      "NEW ERA UNIVERSITY",
+      "JAVA & JAVASCRIPT",
+      "TRIE PREFIX TREE",
+      "REACT & TYPESCRIPT",
+      "SUPABASE POSTGRES",
+      "SEARCH OPTIMIZER",
+      "HOPE ERP PLATFORM",
+      "PYTHON & NUMPY",
+      "CLEAN ARCHITECTURE",
+      "LUCIDCHART & ECLIPSE"
+    ],
+    lg: [
+      "3RD YEAR BS COMPUTER SCIENCE",
+      "RELATIONAL DATABASES SQL",
+      "BAI PASSPORT SYSTEM PORTAL",
+      "AI FOUNDATIONS ASSOCIATE",
+      "ORACLE DATA PLATFORM 2025",
+      "IBM SQL & DATABASES 101"
+    ]
+  }
+};
+
+const bgTracks = document.querySelectorAll(".bg-flow-track");
+
+if (bgTracks.length > 0) {
+  setInterval(() => {
+    const track = bgTracks[Math.floor(Math.random() * bgTracks.length)];
+    const groups = track.querySelectorAll(".bg-flow-group");
+    if (groups.length < 2) return;
+
+    const firstGroupWords = groups[0].querySelectorAll(".bg-word");
+    const secondGroupWords = groups[1].querySelectorAll(".bg-word");
+    if (firstGroupWords.length === 0) return;
+
+    const idx = Math.floor(Math.random() * firstGroupWords.length);
+    const targetA = firstGroupWords[idx];
+    const targetB = secondGroupWords[idx];
+    if (!targetA || !targetB) return;
+
+    const poolType = targetA.dataset.pool === "sub" ? "sub" : "banner";
+    const sizeKey = targetA.dataset.size || "md";
+    const pool = wordPools[poolType][sizeKey] || wordPools[poolType].md;
+    const currentText = targetA.textContent;
+    const candidates = pool.filter((w) => w !== currentText);
+    if (candidates.length === 0) return;
+
+    const nextWord = candidates[Math.floor(Math.random() * candidates.length)];
+
+    targetA.classList.add("is-cycling");
+    targetB.classList.add("is-cycling");
+
+    setTimeout(() => {
+      targetA.textContent = nextWord;
+      targetB.textContent = nextWord;
+    }, 150);
+
+    setTimeout(() => {
+      targetA.classList.remove("is-cycling");
+      targetB.classList.remove("is-cycling");
+    }, 450);
+  }, 950);
+}
+
