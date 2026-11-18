@@ -4,9 +4,10 @@
 
 **Minimalist red-and-black personal portfolio website built with clean HTML, CSS, and JavaScript.**
 
+[![Live Site](https://img.shields.io/badge/Live%20Site-RRSWeb-dc2626?style=for-the-badge&labelColor=0a0a0a)](https://sarmientoredge11.github.io/RRSWeb/)
 [![Stack](https://img.shields.io/badge/Stack-HTML5%20%C2%B7%20CSS3%20%C2%B7%20JS-dc2626?style=for-the-badge&labelColor=0a0a0a)](#-tech-stack)
-[![Theme](https://img.shields.io/badge/Theme-Dark%20%26%20Light%20Mode-dc2626?style=for-the-badge&labelColor=0a0a0a)](#-features)
 [![GitHub](https://img.shields.io/badge/GitHub-sarmientoredge11-dc2626?style=for-the-badge&logo=github&labelColor=0a0a0a)](https://github.com/sarmientoredge11)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Redge%20Sarmiento-dc2626?style=for-the-badge&logo=linkedin&labelColor=0a0a0a)](https://www.linkedin.com/in/redge-sarmiento-421b623b6/)
 
 [**Features**](#-features) · [**Sections**](#-sections) · [**Structure**](#-project-structure) · [**Getting Started**](#-getting-started) · [**Contact**](#-contact)
 
@@ -30,9 +31,11 @@ Designed around a **matte black (`#0a0a0a`)** and **crimson red (`#dc2626`)** pa
 <br>
 
 - **Dark & Light Mode Toggle** — Persists user preference via `localStorage` with zero flash on page load.
-- **Responsive Navigation** — Sticky header with smooth scrolling and a collapsible mobile menu.
-- **One-Click Email Copy** — Copies `sarmientoredge11@gmail.com` directly to the clipboard with instant visual feedback.
-- **Minimalist Red & Black Palette** — High-contrast typography using `Inter` and `JetBrains Mono`.
+- **Interactive Trie Auto-Complete Playground** — Live in-browser Prefix Tree (`O(p)`) & DFS (`O(k·L)`) traversal visualizer and custom word insertion tool.
+- **Slanted Cycling Background Marquee** — Diagonal background ticker that dynamically cycles CS, project, and `RRDS` tokens.
+- **Downloadable Resume (PDF)** — One-click PDF resume download (`Redge_Rainier_Sarmiento_Resume.pdf`).
+- **One-Click Email Copy & Toast Feedback** — Copies `sarmientoredge11@gmail.com` directly to the clipboard.
+- **Custom `RRDS.` SVG Favicon & Open Graph Tags** — Branded browser tab icon and social preview metadata.
 
 </details>
 
@@ -94,10 +97,12 @@ Designed around a **matte black (`#0a0a0a`)** and **crimson red (`#dc2626`)** pa
 
 ```text
 redge-portfolio/
-├── index.html    # Main portfolio markup and sections
-├── styles.css    # Red & black theme, light mode variables, responsive layout
-├── script.js     # Theme toggle, mobile nav menu, copy-email handler
-└── README.md     # Repository documentation
+├── index.html                          # Main portfolio markup, Open Graph tags, and Trie playground
+├── styles.css                          # Red & black theme, light mode, slanted marquee, and UI styles
+├── script.js                           # Theme toggle, Trie/DFS engine, project filters, and marquee cycling
+├── favicon.svg                         # Custom RRDS. red-and-black SVG favicon
+├── Redge_Rainier_Sarmiento_Resume.pdf  # Downloadable Resume / CV
+└── README.md                           # Repository documentation
 ```
 
 ---
@@ -106,8 +111,8 @@ redge-portfolio/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/sarmientoredge11/<your-repo-name>.git
-   cd <your-repo-name>
+   git clone https://github.com/sarmientoredge11/RRSWeb.git
+   cd RRSWeb
    ```
 2. Open `index.html` directly in any browser, or run a local server:
    ```bash
@@ -120,6 +125,7 @@ redge-portfolio/
 
 - **Email:** [sarmientoredge11@gmail.com](mailto:sarmientoredge11@gmail.com)
 - **GitHub:** [github.com/sarmientoredge11](https://github.com/sarmientoredge11)
+- **LinkedIn:** [linkedin.com/in/redge-sarmiento-421b623b6](https://www.linkedin.com/in/redge-sarmiento-421b623b6/)
 
 <div align="center">
 

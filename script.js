@@ -241,3 +241,230 @@ if (bgTracks.length > 0) {
   }, 950);
 }
 
+// Mini Interactive Trie Auto-Complete Demo
+class TrieNode {
+  constructor() {
+    this.children = {};
+    this.endOfWord = false;
+  }
+}
+
+class Trie {
+  constructor() {
+    this.root = new TrieNode();
+    this.wordCount = 0;
+  }
+
+  insert(rawWord) {
+    const word = rawWord.trim().toLowerCase();
+    if (!word) return false;
+    let current = this.root;
+    for (const char of word) {
+      if (!current.children[char]) {
+        current.children[char] = new TrieNode();
+      }
+      current = current.children[char];
+    }
+    if (!current.endOfWord) {
+      current.endOfWord = true;
+      this.wordCount++;
+      return true;
+    }
+    return false;
+  }
+
+  queryPrefix(rawPrefix) {
+    const prefix = rawPrefix.trim().toLowerCase();
+    let current = this.root;
+    const path = [];
+    let missingChar = null;
+
+    for (const char of prefix) {
+      if (!current.children[char]) {
+        missingChar = char;
+        break;
+      }
+      current = current.children[char];
+      path.push({ char: char.toUpperCase(), isEnd: current.endOfWord });
+    }
+
+    const suggestions = [];
+    let dfsNodesVisited = 0;
+
+    if (!missingChar && prefix.length > 0) {
+      const dfs = (node, word) => {
+        dfsNodesVisited++;
+        if (node.endOfWord) {
+          suggestions.push(word);
+        }
+        const keys = Object.keys(node.children).sort();
+        for (const ch of keys) {
+          dfs(node.children[ch], word + ch);
+        }
+      };
+      dfs(current, prefix);
+    }
+
+    return {
+      prefix,
+      path,
+      missingChar: missingChar ? missingChar.toUpperCase() : null,
+      suggestions,
+      dfsNodesVisited
+    };
+  }
+}
+
+const initialWords = [
+  // Words from Redge's DAA Trie Paper trace ("cat", "car", "card", "care", "bat") + extensions
+  "cat", "car", "card", "care", "cart", "carbon", "career", "cargo", "bat", "batch",
+  // Data & Databases
+  "data", "database", "datastructure", "datalist", "datasheet", "dataflow", "db2",
+  // Algorithms & CS
+  "algorithm", "algebra", "alignment", "allocation", "alphanumeric", "autocomplete",
+  // Oracle & Cloud
+  "oracle", "orchestration", "origin", "orbital", "optimization", "optimizer",
+  // Programming & Projects
+  "program", "programming", "programmer", "project", "prototype", "protocol", "promise",
+  // Supabase & Systems
+  "supabase", "superadmin", "support", "system", "syntax", "synchronize", "syslog",
+  // Languages & Tools
+  "java", "javascript", "python", "prefix", "tree", "trie", "typescript", "tailwind"
+];
+
+const demoTrie = new Trie();
+initialWords.forEach((w) => demoTrie.insert(w));
+
+const trieSearchInput = document.getElementById("trie-search-input");
+const trieInsertInput = document.getElementById("trie-insert-input");
+const trieInsertBtn = document.getElementById("trie-insert-btn");
+const triePathEl = document.getElementById("trie-path");
+const trieResultsEl = document.getElementById("trie-results");
+const trieDictSizeEl = document.getElementById("trie-dict-size");
+const triePrefixLenEl = document.getElementById("trie-prefix-len");
+const trieMatchCountEl = document.getElementById("trie-match-count");
+const trieNodesVisitedEl = document.getElementById("trie-nodes-visited");
+const trieBfScannedEl = document.getElementById("trie-bf-scanned");
+const triePresetBtns = document.querySelectorAll(".trie-preset-btn");
+
+function renderTrieDemo(rawQuery) {
+  if (!triePathEl || !trieResultsEl) return;
+
+  const res = demoTrie.queryPrefix(rawQuery);
+  triePathEl.innerHTML = "";
+  trieResultsEl.innerHTML = "";
+
+  // Render Root node
+  const rootBadge = document.createElement("span");
+  rootBadge.className = "trie-node is-root";
+  rootBadge.textContent = "ROOT";
+  triePathEl.appendChild(rootBadge);
+
+  res.path.forEach((step, index) => {
+    const arrow = document.createElement("span");
+    arrow.className = "trie-arrow";
+    arrow.textContent = "→";
+    triePathEl.appendChild(arrow);
+
+    const nodeBadge = document.createElement("span");
+    const isLast = index === res.path.length - 1 && !res.missingChar;
+    nodeBadge.className = `trie-node${isLast ? " is-endpoint" : ""}`;
+    nodeBadge.textContent = step.isEnd ? `${step.char} ✓` : step.char;
+    triePathEl.appendChild(nodeBadge);
+  });
+
+  if (res.missingChar) {
+    const arrow = document.createElement("span");
+    arrow.className = "trie-arrow";
+    arrow.textContent = "→";
+    triePathEl.appendChild(arrow);
+
+    const missingBadge = document.createElement("span");
+    missingBadge.className = "trie-node is-missing";
+    missingBadge.textContent = `${res.missingChar} (✕ not in Trie)`;
+    triePathEl.appendChild(missingBadge);
+  }
+
+  // Render Suggestions
+  if (!res.prefix) {
+    const emptyMsg = document.createElement("span");
+    emptyMsg.className = "trie-empty";
+    emptyMsg.textContent = "Type a prefix above to traverse the Trie...";
+    trieResultsEl.appendChild(emptyMsg);
+  } else if (res.suggestions.length === 0) {
+    const emptyMsg = document.createElement("span");
+    emptyMsg.className = "trie-empty";
+    emptyMsg.textContent = `No completions found for "${res.prefix}" (O(p) early exit)`;
+    trieResultsEl.appendChild(emptyMsg);
+  } else {
+    res.suggestions.forEach((word) => {
+      const chip = document.createElement("span");
+      chip.className = "trie-match-chip";
+      const matchedPart = word.slice(0, res.prefix.length);
+      const restPart = word.slice(res.prefix.length);
+      chip.innerHTML = `<strong>${matchedPart}</strong>${restPart}`;
+      trieResultsEl.appendChild(chip);
+    });
+  }
+
+  // Update Metrics
+  if (trieDictSizeEl) trieDictSizeEl.textContent = String(demoTrie.wordCount);
+  if (triePrefixLenEl) triePrefixLenEl.textContent = String(res.prefix.length);
+  if (trieMatchCountEl) trieMatchCountEl.textContent = String(res.suggestions.length);
+  if (trieNodesVisitedEl) trieNodesVisitedEl.textContent = String(res.path.length + res.dfsNodesVisited);
+  if (trieBfScannedEl) trieBfScannedEl.textContent = String(demoTrie.wordCount);
+
+  triePresetBtns.forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.prefix === res.prefix);
+  });
+}
+
+if (trieSearchInput) {
+  renderTrieDemo(trieSearchInput.value);
+
+  trieSearchInput.addEventListener("input", () => {
+    renderTrieDemo(trieSearchInput.value);
+  });
+}
+
+triePresetBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const prefix = btn.dataset.prefix || "";
+    if (trieSearchInput) {
+      trieSearchInput.value = prefix;
+      renderTrieDemo(prefix);
+    }
+  });
+});
+
+function handleTrieInsert() {
+  if (!trieInsertInput) return;
+  const word = trieInsertInput.value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
+  if (!word) {
+    showToast("Enter a word to insert into the Trie");
+    return;
+  }
+  const added = demoTrie.insert(word);
+  trieInsertInput.value = "";
+  const prefix = word.slice(0, Math.min(3, word.length));
+  if (trieSearchInput) {
+    trieSearchInput.value = prefix;
+    renderTrieDemo(prefix);
+  }
+  showToast(added ? `Inserted "${word}" into Trie (${demoTrie.wordCount} words)` : `"${word}" is already in the Trie`);
+}
+
+if (trieInsertBtn) {
+  trieInsertBtn.addEventListener("click", handleTrieInsert);
+}
+
+if (trieInsertInput) {
+  trieInsertInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleTrieInsert();
+    }
+  });
+}
+
+

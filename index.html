@@ -5,9 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Portfolio of Redge Rainier D. Sarmiento, 3rd year BS Computer Science student at New Era University."
+    content="Portfolio of Redge Rainier D. Sarmiento — 3rd year BS Computer Science student at New Era University (President's Lister, 1.38 GWA). Open to Software Engineering & QA Internships."
   />
+  <meta name="author" content="Redge Rainier D. Sarmiento" />
+  <meta name="theme-color" content="#dc2626" />
+
+  <!-- Open Graph / Social Link Preview Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sarmientoredge11.github.io/RRSWeb/" />
+  <meta property="og:title" content="Redge Rainier D. Sarmiento — Computer Science Portfolio" />
+  <meta
+    property="og:description"
+    content="3rd Year BS Computer Science Student at New Era University (President's Lister, 1.38 GWA). Explore my projects in Algorithms, Full-Stack ERP QA, and HCI."
+  />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Redge Rainier D. Sarmiento — CS Portfolio" />
+  <meta
+    name="twitter:description"
+    content="3rd Year BS Computer Science Student at New Era University. Open to Software Engineering & QA Internships."
+  />
+
   <title>Redge Rainier D. Sarmiento — Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -178,21 +197,32 @@
   <main id="top">
     <!-- Hero Section -->
     <section class="hero container">
-      <p class="eyebrow">
-        <span class="status-dot" aria-hidden="true"></span>
-        3rd Year BS Computer Science Student
-      </p>
+      <div class="hero-badges">
+        <p class="eyebrow">
+          <span class="status-dot" aria-hidden="true"></span>
+          3rd Year BS Computer Science &bull; Open to Software / QA Internships
+        </p>
+        <span class="location-tag">Quezon City, Metro Manila</span>
+      </div>
       <h1>Redge Rainier D. Sarmiento</h1>
       <p class="hero-bio">
-        Dedicated BS Computer Science student with a passion for technology,
-        problem-solving, and continuous learning. I enjoy exploring
-        programming, databases, and tools that help me create meaningful and
-        efficient solutions.
+        Dedicated BS Computer Science student and <strong>President's Lister (1.38 GWA)</strong>
+        at New Era University with a passion for technology, problem-solving, and continuous
+        learning. I enjoy exploring algorithms, databases, and tools that help me build and test
+        meaningful, efficient software solutions.
       </p>
       <div class="hero-actions">
         <a href="#contact" class="btn btn-primary">
           <span>Get in Touch</span>
           <span class="btn-icon" aria-hidden="true">&rarr;</span>
+        </a>
+        <a
+          href="Redge_Rainier_Sarmiento_Resume.pdf"
+          download="Redge_Rainier_Sarmiento_Resume.pdf"
+          class="btn btn-secondary"
+        >
+          <span>Download Resume (PDF)</span>
+          <span class="btn-icon" aria-hidden="true">&darr;</span>
         </a>
         <a href="#projects" class="btn btn-secondary">
           <span>View Projects</span>
@@ -206,21 +236,51 @@
           <span>GitHub</span>
           <span class="btn-arrow" aria-hidden="true">&nearr;</span>
         </a>
+        <a
+          href="https://www.linkedin.com/in/redge-sarmiento-421b623b6/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-secondary"
+        >
+          <span>LinkedIn</span>
+          <span class="btn-arrow" aria-hidden="true">&nearr;</span>
+        </a>
       </div>
     </section>
 
     <!-- Education Section -->
     <section id="education" class="section container">
       <div class="section-header">
-        <span class="section-index">01</span>
-        <h2>Education</h2>
+        <div class="section-title-group">
+          <span class="section-index">01</span>
+          <h2>Education</h2>
+        </div>
+        <span class="mono-tag">Expected Graduation: July 2028</span>
       </div>
       <div class="card education-card">
-        <div class="edu-main">
-          <h3>New Era University</h3>
-          <p class="edu-program">Bachelor of Science in Computer Science</p>
+        <div class="edu-top">
+          <div class="edu-main">
+            <h3>New Era University <span class="edu-location">&mdash; Quezon City, Metro Manila</span></h3>
+            <p class="edu-program">Bachelor of Science in Computer Science (2024 – Present)</p>
+          </div>
+          <div class="edu-badges">
+            <span class="mono-tag">GWA: 1.38</span>
+            <span class="mono-tag honor-tag">President's Lister</span>
+          </div>
         </div>
-        <span class="mono-tag">2024 – Present</span>
+        <div class="edu-coursework">
+          <p class="coursework-label">Relevant Coursework</p>
+          <ul class="coursework-list">
+            <li>Data Structures &amp; Algorithms</li>
+            <li>Design &amp; Analysis of Algorithms</li>
+            <li>Object-Oriented Programming</li>
+            <li>Database Management Systems</li>
+            <li>Software Engineering</li>
+            <li>Computer Architecture &amp; Organization</li>
+            <li>Operating Systems</li>
+            <li>Human-Computer Interaction</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -238,25 +298,30 @@
           <h3>Programming</h3>
           <ul class="pill-list">
             <li><button type="button" class="pill" data-skill="Java">Java</button></li>
-            <li><button type="button" class="pill" data-skill="JavaScript">JavaScript</button></li>
             <li><button type="button" class="pill" data-skill="Python">Python</button></li>
+            <li><button type="button" class="pill" data-skill="JavaScript">JavaScript</button></li>
+            <li><button type="button" class="pill" data-skill="SQL">SQL</button></li>
             <li><button type="button" class="pill" data-skill="TypeScript">TypeScript</button></li>
           </ul>
         </div>
         <div class="card skill-group">
-          <h3>Databases &amp; Backend</h3>
+          <h3>Databases &amp; Data</h3>
           <ul class="pill-list">
-            <li><button type="button" class="pill" data-skill="SQL">SQL</button></li>
+            <li><button type="button" class="pill" data-skill="IBM Db2">IBM Db2</button></li>
             <li><button type="button" class="pill" data-skill="Supabase">Supabase</button></li>
+            <li><button type="button" class="pill" data-skill="SQL">Relational SQL</button></li>
           </ul>
         </div>
         <div class="card skill-group">
-          <h3>Tools &amp; Frontend</h3>
+          <h3>Web &amp; Developer Tools</h3>
           <ul class="pill-list">
-            <li><button type="button" class="pill" data-skill="HTML">HTML</button></li>
+            <li><button type="button" class="pill" data-skill="HTML">HTML5 / CSS3</button></li>
             <li><button type="button" class="pill" data-skill="React">React</button></li>
-            <li><button type="button" class="pill" data-skill="Lucidchart">Lucidchart</button></li>
+            <li><button type="button" class="pill" data-skill="Git">Git &amp; GitHub</button></li>
+            <li><button type="button" class="pill" data-skill="IntelliJ">IntelliJ IDEA</button></li>
             <li><button type="button" class="pill" data-skill="Eclipse">Eclipse</button></li>
+            <li><button type="button" class="pill" data-skill="Vercel">Vercel</button></li>
+            <li><button type="button" class="pill" data-skill="Lucidchart">Lucidchart</button></li>
           </ul>
         </div>
       </div>
@@ -449,18 +514,103 @@
           </ul>
         </article>
       </div>
+
+      <!-- Mini Interactive Trie Auto-Complete Demo -->
+      <div class="card trie-demo-card" id="trie-demo">
+        <div class="trie-demo-header">
+          <div>
+            <span class="mono-label">Interactive Algorithm Playground</span>
+            <h3>Try The Search Optimizer (Trie / Prefix Tree)</h3>
+            <p class="trie-demo-sub">
+              Type a prefix below to trace the character nodes from <code>ROOT</code> in
+              <strong>O(p)</strong> time and collect completions via Depth-First Search (DFS).
+            </p>
+          </div>
+          <a
+            href="https://github.com/sarmientoredge11/Search_Optimizer_DAA"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project-link"
+          >Source Code <span class="btn-arrow" aria-hidden="true">&nearr;</span></a>
+        </div>
+
+        <div class="trie-controls">
+          <div class="trie-input-wrap">
+            <label for="trie-search-input" class="sr-only">Type a prefix to search the Trie</label>
+            <span class="trie-prompt" aria-hidden="true">&gt;</span>
+            <input
+              type="text"
+              id="trie-search-input"
+              class="trie-input"
+              placeholder="Type a prefix (e.g. car, alg, ora, dat, sys)..."
+              value="car"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+
+          <div class="trie-add-wrap">
+            <label for="trie-insert-input" class="sr-only">Insert a new word into the Trie</label>
+            <input
+              type="text"
+              id="trie-insert-input"
+              class="trie-input trie-input-sm"
+              placeholder="Insert custom word..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button type="button" class="btn btn-secondary btn-sm" id="trie-insert-btn">
+              + Insert Word
+            </button>
+          </div>
+        </div>
+
+        <div class="trie-presets">
+          <span class="trie-preset-label">Quick prefixes:</span>
+          <button type="button" class="filter-btn trie-preset-btn is-active" data-prefix="car">car</button>
+          <button type="button" class="filter-btn trie-preset-btn" data-prefix="da">da</button>
+          <button type="button" class="filter-btn trie-preset-btn" data-prefix="alg">alg</button>
+          <button type="button" class="filter-btn trie-preset-btn" data-prefix="ora">ora</button>
+          <button type="button" class="filter-btn trie-preset-btn" data-prefix="sup">sup</button>
+          <button type="button" class="filter-btn trie-preset-btn" data-prefix="pro">pro</button>
+          <button type="button" class="filter-btn trie-preset-btn" data-prefix="sys">sys</button>
+        </div>
+
+        <div class="trie-visual-grid">
+          <div class="trie-panel">
+            <span class="trie-panel-title">1. Prefix Traversal Path &mdash; O(p)</span>
+            <div class="trie-path" id="trie-path" aria-live="polite"></div>
+          </div>
+
+          <div class="trie-panel">
+            <span class="trie-panel-title">2. DFS Auto-Complete Suggestions &mdash; O(k &middot; L)</span>
+            <div class="trie-results" id="trie-results" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="trie-metrics" id="trie-metrics">
+          <span>Dictionary: <strong id="trie-dict-size">0</strong> words</span>
+          <span>Prefix Length (p): <strong id="trie-prefix-len">3</strong></span>
+          <span>Matches (k): <strong id="trie-match-count">0</strong></span>
+          <span>DFS Nodes Visited: <strong id="trie-nodes-visited">0</strong> vs Brute-Force Scan: <strong id="trie-bf-scanned">0</strong> words</span>
+        </div>
+      </div>
     </section>
 
     <!-- Contact Section -->
     <section id="contact" class="section container">
       <div class="section-header">
-        <span class="section-index">05</span>
-        <h2>Let's Connect</h2>
+        <div class="section-title-group">
+          <span class="section-index">05</span>
+          <h2>Let's Connect</h2>
+        </div>
+        <span class="mono-tag">Open to Internships</span>
       </div>
       <div class="card contact-card">
         <p class="contact-text">
-          Open to collaborations, academic projects, and internship
-          opportunities. Feel free to reach out directly via email.
+          Currently open to <strong>Software Engineering, QA Testing, and Database/Cloud Internship</strong>
+          opportunities, as well as academic collaborations. Feel free to reach out directly via
+          email or LinkedIn.
         </p>
         <div class="contact-actions">
           <button
@@ -471,6 +621,14 @@
           >
             <span id="copy-email-text">Copy sarmientoredge11@gmail.com</span>
           </button>
+          <a
+            href="Redge_Rainier_Sarmiento_Resume.pdf"
+            download="Redge_Rainier_Sarmiento_Resume.pdf"
+            class="btn btn-secondary"
+          >
+            <span>Download Resume (PDF)</span>
+            <span class="btn-icon" aria-hidden="true">&darr;</span>
+          </a>
           <a
             href="https://mail.google.com/mail/?view=cm&fs=1&to=sarmientoredge11@gmail.com"
             target="_blank"
@@ -496,6 +654,16 @@
             aria-label="GitHub Profile"
           >
             <span>github.com/sarmientoredge11</span>
+            <span class="btn-arrow" aria-hidden="true">&nearr;</span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/redge-sarmiento-421b623b6/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-pill"
+            aria-label="LinkedIn Profile"
+          >
+            <span>linkedin.com/in/redge-sarmiento</span>
             <span class="btn-arrow" aria-hidden="true">&nearr;</span>
           </a>
         </div>
