@@ -101,6 +101,7 @@ redge-portfolio/
 ├── styles.css                          # Red & black theme, light mode, slanted marquee, and UI styles
 ├── script.js                           # Theme toggle, Trie/DFS engine, project filters, and marquee cycling
 ├── favicon.svg                         # Custom RRDS. red-and-black SVG favicon
+├── og-preview.png                      # 1200x630 Open Graph social share preview banner
 ├── Redge_Rainier_Sarmiento_Resume.pdf  # Downloadable Resume / CV
 └── README.md                           # Repository documentation
 ```
