@@ -5,7 +5,6 @@ const copyEmailText = document.getElementById("copy-email-text");
 const themeToggle = document.getElementById("theme-toggle");
 const backToTopBtn = document.getElementById("back-to-top");
 const toast = document.getElementById("toast");
-const filterButtons = document.querySelectorAll(".filter-btn");
 const skillPills = document.querySelectorAll(".pill[data-skill]");
 const projectCards = document.querySelectorAll(".project-card");
 const sections = document.querySelectorAll("main section[id]");
@@ -77,21 +76,6 @@ if (copyEmailBtn) {
   });
 }
 
-// Project Category Filters
-filterButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const filter = btn.dataset.filter;
-    filterButtons.forEach((b) => b.classList.toggle("is-active", b === btn));
-    skillPills.forEach((p) => p.classList.remove("is-active"));
-
-    projectCards.forEach((card) => {
-      card.classList.remove("is-highlighted");
-      const matches = filter === "all" || card.dataset.category === filter;
-      card.classList.toggle("is-hidden", !matches);
-    });
-  });
-});
-
 // Interactive Skill Pills -> Highlight Matching Projects
 skillPills.forEach((pill) => {
   pill.addEventListener("click", () => {
@@ -99,8 +83,7 @@ skillPills.forEach((pill) => {
     const wasActive = pill.classList.contains("is-active");
 
     skillPills.forEach((p) => p.classList.remove("is-active"));
-    filterButtons.forEach((b) => b.classList.toggle("is-active", b.dataset.filter === "all"));
-    projectCards.forEach((card) => card.classList.remove("is-hidden", "is-highlighted"));
+    projectCards.forEach((card) => card.classList.remove("is-highlighted"));
 
     if (wasActive) return;
 
