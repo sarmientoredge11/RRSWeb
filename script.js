@@ -64,12 +64,13 @@ if (copyEmailBtn) {
     try {
       await navigator.clipboard.writeText(email);
       if (copyEmailText) {
-        copyEmailText.textContent = "Copied to Clipboard ✓";
+        const originalText = copyEmailText.textContent;
+        copyEmailText.textContent = "Copied ✓";
         setTimeout(() => {
-          copyEmailText.textContent = `Copy ${email}`;
+          copyEmailText.textContent = originalText;
         }, 2200);
       }
-      showToast(`Copied ${email} to clipboard`);
+      showToast(`Copied ${email}`);
     } catch {
       window.location.href = `mailto:${email}`;
     }
