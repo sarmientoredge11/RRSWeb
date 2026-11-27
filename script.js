@@ -21,7 +21,23 @@ function showToast(message) {
   }, 2400);
 }
 
+const eyeOverlay = document.getElementById("ui-eye-overlay");
 let auraSurge = 0;
+let eyeGlareTimeout;
+
+function triggerEyeGlare(theme) {
+  if (!eyeOverlay) return;
+  eyeOverlay.setAttribute("data-glare", theme);
+  eyeOverlay.classList.remove("is-active");
+  // Force reflow so rapid theme toggles cleanly replay the eye-glare cut-in
+  void eyeOverlay.offsetWidth;
+  eyeOverlay.classList.add("is-active");
+
+  clearTimeout(eyeGlareTimeout);
+  eyeGlareTimeout = setTimeout(() => {
+    eyeOverlay.classList.remove("is-active");
+  }, 1150);
+}
 
 function updateThemeButton(theme) {
   if (!themeToggle) return;
@@ -47,6 +63,7 @@ if (themeToggle) {
     localStorage.setItem("theme", nextTheme);
     updateThemeButton(nextTheme);
     auraSurge = 1;
+    triggerEyeGlare(nextTheme);
     showToast(
       nextTheme === "light"
         ? "Mastered Ultra Instinct (Light)"

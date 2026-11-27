@@ -51,6 +51,181 @@
   <div class="ui-aura-backdrop" aria-hidden="true"></div>
   <canvas id="ui-particles" class="ui-particles" aria-hidden="true"></canvas>
 
+  <!-- Ultra Instinct Eye Glare Cut-In Overlay (Triggered on Theme Switch) -->
+  <div class="ui-eye-overlay" id="ui-eye-overlay" aria-hidden="true">
+    <div class="ui-eye-banner">
+      <div class="ui-eye-aura-flash"></div>
+      <svg
+        class="ui-eye-svg"
+        viewBox="0 0 800 220"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <clipPath id="uiLeftEyeClip">
+            <path d="M216 99 Q276 83 358 114 L346 127 Q278 131 224 116 Z" />
+          </clipPath>
+          <clipPath id="uiRightEyeClip">
+            <path d="M584 99 Q524 83 442 114 L454 127 Q522 131 576 116 Z" />
+          </clipPath>
+
+          <!-- UI Sign (Dark) Iris: Gunmetal Silver with Dark Core -->
+          <radialGradient id="irisOmen" cx="50%" cy="55%" r="55%">
+            <stop offset="0%" stop-color="#070812" />
+            <stop offset="28%" stop-color="#1e293b" />
+            <stop offset="68%" stop-color="#cbd5e1" />
+            <stop offset="90%" stop-color="#94a3b8" />
+            <stop offset="100%" stop-color="#0f172a" />
+          </radialGradient>
+
+          <!-- Mastered UI (Light) Iris: Blinding Divine Silver-White & Cyan -->
+          <radialGradient id="irisMastered" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stop-color="#0f172a" />
+            <stop offset="18%" stop-color="#ffffff" />
+            <stop offset="58%" stop-color="#e0f2fe" />
+            <stop offset="85%" stop-color="#7dd3fc" />
+            <stop offset="100%" stop-color="#334155" />
+          </radialGradient>
+
+          <!-- Omen Hair Fill (Jet Black + Cosmic Indigo Sheen) -->
+          <linearGradient id="hairOmen" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#05060e" />
+            <stop offset="70%" stop-color="#11162d" />
+            <stop offset="100%" stop-color="#312e81" />
+          </linearGradient>
+
+          <!-- Mastered Hair Fill (Radiant Silver-White) -->
+          <linearGradient id="hairMastered" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="65%" stop-color="#e2e8f0" />
+            <stop offset="100%" stop-color="#94a3b8" />
+          </linearGradient>
+
+          <!-- Omen Lens Flare Gradient (Violet -> White -> Ice Cyan) -->
+          <linearGradient id="flareOmen" x1="0%" y1="50%" x2="100%" y2="50%">
+            <stop offset="0%" stop-color="#7c3aed" stop-opacity="0" />
+            <stop offset="25%" stop-color="#a855f7" stop-opacity="0.85" />
+            <stop offset="50%" stop-color="#ffffff" stop-opacity="1" />
+            <stop offset="75%" stop-color="#38bdf8" stop-opacity="0.85" />
+            <stop offset="100%" stop-color="#7c3aed" stop-opacity="0" />
+          </linearGradient>
+
+          <!-- Mastered Lens Flare Gradient (Sky Cyan -> Blinding White -> Iris Violet) -->
+          <linearGradient id="flareMastered" x1="0%" y1="50%" x2="100%" y2="50%">
+            <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0" />
+            <stop offset="20%" stop-color="#38bdf8" stop-opacity="0.95" />
+            <stop offset="50%" stop-color="#ffffff" stop-opacity="1" />
+            <stop offset="80%" stop-color="#8b5cf6" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+
+        <!-- Forehead & Cheek Subtle Anime Shading -->
+        <path
+          class="ui-skin-tone"
+          d="M140 0 H660 L635 220 H165 Z"
+        />
+
+        <!-- Brow Furrow & Nose Bridge Scowl Lines -->
+        <path
+          class="ui-ink-line"
+          d="M385 88 L392 114 M415 88 L408 114 M396 124 L394 152 M404 128 L406 146"
+          stroke-width="2.2"
+          stroke-linecap="round"
+        />
+        <!-- Under-Eye Fierce Creases -->
+        <path
+          class="ui-ink-line"
+          d="M242 135 Q288 141 336 134 M558 135 Q512 141 464 134"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+
+        <!-- LEFT EYE (Viewer Left) -->
+        <g class="ui-eye-group">
+          <path
+            class="ui-sclera"
+            d="M216 99 Q276 83 358 114 L346 127 Q278 131 224 116 Z"
+          />
+          <g clip-path="url(#uiLeftEyeClip)">
+            <circle class="ui-iris" cx="296" cy="107" r="19.5" />
+            <circle class="ui-iris-ring" cx="296" cy="107" r="13" stroke-width="1.4" />
+            <circle class="ui-pupil" cx="296" cy="107" r="5.5" />
+            <circle cx="289" cy="101" r="3.4" fill="#ffffff" />
+            <circle cx="303" cy="112" r="1.8" fill="#ffffff" opacity="0.85" />
+          </g>
+          <!-- Bold Anime Eyeliner -->
+          <path
+            class="ui-eyelash"
+            d="M208 101 Q274 80 362 115 L355 119 Q275 88 218 104 Z"
+          />
+          <path
+            class="ui-ink-line"
+            d="M222 116 Q280 131 348 126"
+            stroke-width="2.4"
+            stroke-linecap="round"
+          />
+        </g>
+
+        <!-- RIGHT EYE (Viewer Right) -->
+        <g class="ui-eye-group">
+          <path
+            class="ui-sclera"
+            d="M584 99 Q524 83 442 114 L454 127 Q522 131 576 116 Z"
+          />
+          <g clip-path="url(#uiRightEyeClip)">
+            <circle class="ui-iris" cx="504" cy="107" r="19.5" />
+            <circle class="ui-iris-ring" cx="504" cy="107" r="13" stroke-width="1.4" />
+            <circle class="ui-pupil" cx="504" cy="107" r="5.5" />
+            <circle cx="497" cy="101" r="3.4" fill="#ffffff" />
+            <circle cx="511" cy="112" r="1.8" fill="#ffffff" opacity="0.85" />
+          </g>
+          <!-- Bold Anime Eyeliner -->
+          <path
+            class="ui-eyelash"
+            d="M592 101 Q526 80 438 115 L445 119 Q525 88 582 104 Z"
+          />
+          <path
+            class="ui-ink-line"
+            d="M578 116 Q520 131 452 126"
+            stroke-width="2.4"
+            stroke-linecap="round"
+          />
+        </g>
+
+        <!-- Fierce Furrowed Eyebrows (Black in UI Sign, Silver-White in Mastered UI) -->
+        <path
+          class="ui-brow"
+          d="M190 73 Q266 54 370 102 L363 112 Q268 71 198 86 Z"
+        />
+        <path
+          class="ui-brow"
+          d="M610 73 Q534 54 430 102 L437 112 Q532 71 602 86 Z"
+        />
+
+        <!-- Iconic Goku Spiky Forehead Bangs Framing the Eyes -->
+        <path
+          class="ui-hair"
+          d="M95 0 H705 L675 96 L628 38 L595 88 L552 26 L496 76 L465 18 L408 106 L388 30 L345 94 L305 22 L252 82 L208 28 L158 98 Z"
+        />
+
+        <!-- EYE GLARE FLARES (Erupting from both pupils at 296,107 and 504,107) -->
+        <g class="ui-glare-burst">
+          <!-- Wide Anamorphic Horizontal Slash Across Both Eyes -->
+          <ellipse class="ui-glare-beam" cx="400" cy="107" rx="390" ry="4.5" />
+          <!-- Left Pupil Star Glare -->
+          <ellipse class="ui-glare-beam" cx="296" cy="107" rx="145" ry="6.5" />
+          <ellipse class="ui-glare-beam" cx="296" cy="107" rx="4.5" ry="58" />
+          <circle class="ui-glare-core" cx="296" cy="107" r="11" />
+          <!-- Right Pupil Star Glare -->
+          <ellipse class="ui-glare-beam" cx="504" cy="107" rx="145" ry="6.5" />
+          <ellipse class="ui-glare-beam" cx="504" cy="107" rx="4.5" ry="58" />
+          <circle class="ui-glare-core" cx="504" cy="107" r="11" />
+        </g>
+      </svg>
+    </div>
+  </div>
+
   <!-- Slanted Flowing & Cycling Background Text -->
   <div class="bg-flow" aria-hidden="true">
     <div class="bg-flow-row banner">
