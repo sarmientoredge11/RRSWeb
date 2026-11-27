@@ -231,7 +231,7 @@ function finishLoading() {
   }, 650);
 }
 
-setTimeout(finishLoading, 3000);
+setTimeout(finishLoading, 5000);
 
 function showToast(message) {
   if (!toast) return;
