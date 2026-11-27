@@ -1,5 +1,6 @@
 const uiLoader = document.getElementById("ui-loader");
 const slidesViewport = document.getElementById("slides-viewport");
+const uiSpeedFlash = document.getElementById("ui-speed-flash");
 const slides = Array.from(document.querySelectorAll(".slide"));
 const dockLinks = document.querySelectorAll('.side-dock a[data-slide-link]');
 const allSlideLinks = document.querySelectorAll('[data-slide-link]');
@@ -221,9 +222,6 @@ if (loaderFxCanvas instanceof HTMLCanvasElement) {
 
 function finishLoading() {
   if (!uiLoader || uiLoader.classList.contains("is-done")) return;
-  if (slidesViewport) {
-    slidesViewport.scrollLeft = 0;
-  }
   uiLoader.classList.add("is-done");
   setTimeout(() => {
     loaderActive = false;
@@ -279,41 +277,14 @@ if (themeToggle) {
   });
 }
 
-// Seamless Continuous Horizontal Scroll & Shortcut Navigation Engine
-let targetScrollX = 0;
-let smoothScrollRaf = null;
-
-function getMaxScrollX() {
-  if (!slidesViewport) return 0;
-  return Math.max(0, slidesViewport.scrollWidth - slidesViewport.clientWidth);
-}
-
-function getSlideScrollTarget(index) {
-  if (!slidesViewport || !slides[index]) return 0;
-  if (index === 0) return 0;
-  const slide = slides[index];
-  const centeredOffset =
-    slide.offsetLeft - Math.max(0, (slidesViewport.clientWidth - slide.offsetWidth) * 0.5);
-  return Math.max(0, Math.min(getMaxScrollX(), centeredOffset));
-}
-
-function updateActiveSlideFromScroll() {
-  if (!slidesViewport || slides.length === 0) return;
-  const viewportCenter = slidesViewport.scrollLeft + slidesViewport.clientWidth * 0.45;
-  let closestIdx = 0;
-  let minDist = Infinity;
-
-  slides.forEach((slide, idx) => {
-    const slideCenter = slide.offsetLeft + slide.offsetWidth * 0.5;
-    const dist = Math.abs(slideCenter - viewportCenter);
-    if (dist < minDist) {
-      minDist = dist;
-      closestIdx = idx;
-    }
-  });
-
-  syncActiveSlide(closestIdx);
-}
+// Isolated Single-Section Ultra Instinct Speed-Fade Navigation Engine
+const TRANSITION_CLASSES = [
+  "is-leaving-next",
+  "is-leaving-prev",
+  "is-entering-next",
+  "is-entering-prev"
+];
+let slideCleanTimer = null;
 
 function syncActiveSlide(index) {
   currentSlideIndex = Math.max(0, Math.min(slides.length - 1, index));
@@ -338,38 +309,47 @@ function syncActiveSlide(index) {
   }
 }
 
-function stepSmoothScroll() {
-  if (!slidesViewport) {
-    smoothScrollRaf = null;
-    return;
-  }
-  const current = slidesViewport.scrollLeft;
-  const diff = targetScrollX - current;
-
-  if (Math.abs(diff) < 0.6) {
-    slidesViewport.scrollLeft = targetScrollX;
-    smoothScrollRaf = null;
-    updateActiveSlideFromScroll();
-    return;
-  }
-
-  slidesViewport.scrollLeft = current + diff * 0.14;
-  updateActiveSlideFromScroll();
-  smoothScrollRaf = requestAnimationFrame(stepSmoothScroll);
-}
-
-function startSmoothGlide(nextTargetX) {
-  targetScrollX = Math.max(0, Math.min(getMaxScrollX(), nextTargetX));
-  if (!smoothScrollRaf) {
-    smoothScrollRaf = requestAnimationFrame(stepSmoothScroll);
-  }
+function triggerSpeedFlash(isForward) {
+  if (!uiSpeedFlash) return;
+  uiSpeedFlash.classList.remove("flash-next", "flash-prev");
+  void uiSpeedFlash.offsetWidth;
+  uiSpeedFlash.classList.add(isForward ? "flash-next" : "flash-prev");
 }
 
 function goToSlideByIndex(index) {
-  if (!slidesViewport || slides.length === 0) return;
+  if (slides.length === 0) return;
   const clamped = Math.max(0, Math.min(slides.length - 1, index));
+  if (clamped === currentSlideIndex) return;
+
+  const prevIndex = currentSlideIndex;
+  const isForward = clamped > prevIndex;
+  const outgoing = slides[prevIndex];
+  const incoming = slides[clamped];
+
+  // Clear any in-flight animations immediately so rapid scrolling never hits a wall
+  clearTimeout(slideCleanTimer);
+  slides.forEach((s) => s.classList.remove(...TRANSITION_CLASSES));
+
+  // Reset vertical scroll position on incoming slide cleanly
+  if (incoming) {
+    incoming.scrollTop = 0;
+  }
+
   syncActiveSlide(clamped);
-  startSmoothGlide(getSlideScrollTarget(clamped));
+
+  if (outgoing) {
+    outgoing.classList.add(isForward ? "is-leaving-next" : "is-leaving-prev");
+  }
+  if (incoming) {
+    incoming.classList.add(isForward ? "is-entering-next" : "is-entering-prev");
+  }
+
+  auraSurge = 0.72;
+  triggerSpeedFlash(isForward);
+
+  slideCleanTimer = setTimeout(() => {
+    slides.forEach((s) => s.classList.remove(...TRANSITION_CLASSES));
+  }, 360);
 }
 
 function goToSlideById(id) {
@@ -397,53 +377,101 @@ if (nextSlideBtn) {
   nextSlideBtn.addEventListener("click", () => goToSlideByIndex(currentSlideIndex + 1));
 }
 
-// Buttery-smooth continuous wheel-to-horizontal inertia (zero snap walls or locks)
+// Effortless Wheel / Trackpad & Touch Swipe Detection (Zero Brick Walls)
 if (slidesViewport) {
+  let wheelAccum = 0;
+  let lastWheelTime = 0;
+  let lastTriggerTime = 0;
+  let lastTriggerDir = 0;
+  let prevAbsDelta = 0;
+  let gestureConsumed = false;
+
   slidesViewport.addEventListener(
     "wheel",
     (e) => {
-      // Normalize wheel delta across mouse wheels (lines) and trackpads (pixels)
-      const factor = e.deltaMode === 1 ? 36 : e.deltaMode === 2 ? window.innerWidth : 1;
+      const now = performance.now();
+      const factor = e.deltaMode === 1 ? 36 : e.deltaMode === 2 ? window.innerHeight : 1;
       const dx = e.deltaX * factor;
       const dy = e.deltaY * factor;
+      const isHorizontal = Math.abs(dx) > Math.abs(dy);
+      const primaryDelta = isHorizontal ? dx : dy;
+      if (Math.abs(primaryDelta) < 0.5) return;
 
-      // If scrolling horizontally on a trackpad, let native momentum work seamlessly
-      if (Math.abs(dx) > Math.abs(dy)) {
-        if (smoothScrollRaf) {
-          cancelAnimationFrame(smoothScrollRaf);
-          smoothScrollRaf = null;
+      const dir = primaryDelta > 0 ? 1 : -1;
+      const activeSlide = slides[currentSlideIndex];
+
+      // Allow smooth vertical scrolling inside tall sections until reaching top/bottom edge
+      if (!isHorizontal && activeSlide) {
+        const maxInternalScroll = activeSlide.scrollHeight - activeSlide.clientHeight;
+        if (maxInternalScroll > 8) {
+          const canScrollDown = dir > 0 && activeSlide.scrollTop < maxInternalScroll - 3;
+          const canScrollUp = dir < 0 && activeSlide.scrollTop > 3;
+          if (canScrollDown || canScrollUp) {
+            wheelAccum = 0;
+            lastWheelTime = now;
+            return;
+          }
         }
-        targetScrollX = slidesViewport.scrollLeft;
-        return;
       }
 
       e.preventDefault();
-      if (!smoothScrollRaf) {
-        targetScrollX = slidesViewport.scrollLeft;
+
+      const absDelta = Math.abs(primaryDelta);
+      const gap = now - lastWheelTime;
+      lastWheelTime = now;
+
+      // Reset gesture state after a brief pause, direction flip, or fresh flick acceleration
+      if (
+        gap > 140 ||
+        dir !== lastTriggerDir ||
+        (gestureConsumed && absDelta > prevAbsDelta * 1.35 + 6 && now - lastTriggerTime > 120) ||
+        (gestureConsumed && now - lastTriggerTime > 250 && absDelta >= 18)
+      ) {
+        gestureConsumed = false;
+        if (gap > 140 || dir !== Math.sign(wheelAccum)) {
+          wheelAccum = 0;
+        }
       }
-      startSmoothGlide(targetScrollX + dy * 1.15);
+
+      prevAbsDelta = absDelta;
+      if (gestureConsumed) return;
+
+      wheelAccum += primaryDelta;
+      if (Math.abs(wheelAccum) >= 32) {
+        const stepDir = wheelAccum > 0 ? 1 : -1;
+        wheelAccum = 0;
+        gestureConsumed = true;
+        lastTriggerTime = now;
+        lastTriggerDir = stepDir;
+        goToSlideByIndex(currentSlideIndex + stepDir);
+      }
     },
     { passive: false }
   );
 
+  // Touch Swipe Left / Right Support for Mobile & Tablets
+  let touchStartX = 0;
+  let touchStartY = 0;
+
   slidesViewport.addEventListener(
     "touchstart",
-    () => {
-      if (smoothScrollRaf) {
-        cancelAnimationFrame(smoothScrollRaf);
-        smoothScrollRaf = null;
-      }
+    (e) => {
+      if (e.touches.length !== 1) return;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
     },
     { passive: true }
   );
 
   slidesViewport.addEventListener(
-    "scroll",
-    () => {
-      if (!smoothScrollRaf) {
-        targetScrollX = slidesViewport.scrollLeft;
+    "touchend",
+    (e) => {
+      if (e.changedTouches.length !== 1) return;
+      const dx = touchStartX - e.changedTouches[0].clientX;
+      const dy = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.15) {
+        goToSlideByIndex(currentSlideIndex + (dx > 0 ? 1 : -1));
       }
-      updateActiveSlideFromScroll();
     },
     { passive: true }
   );

@@ -558,50 +558,220 @@ ul {
   display: block;
 }
 
-/* Seamless Continuous Horizontal Left-to-Right Flow */
+/* Isolated Single-Section Stage & Ultra Instinct High-Speed Fade */
 .slides-viewport {
   position: relative;
   z-index: 2;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.slides-viewport::-webkit-scrollbar {
-  display: none;
+  overflow: hidden;
 }
 
 .slide {
-  flex: 0 0 auto;
-  width: min(940px, 92vw);
-  height: 100vh;
-  height: 100dvh;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none;
   display: flex;
   flex-direction: column;
   padding: 2rem 2.5rem 2.5rem 6.25rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity, filter;
 }
 
 .slide::-webkit-scrollbar {
   display: none;
 }
 
-/* Bio starts centered across the initial screen, then sections flow seamlessly */
-#bio.slide {
-  width: 100vw;
+.slide.is-current {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 3;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
 }
 
-#contact.slide {
-  padding-right: max(4rem, 12vw);
+/* Outgoing section vanishes rapidly into a motion-blur afterimage */
+.slide.is-leaving-next {
+  visibility: visible;
+  pointer-events: none;
+  z-index: 2;
+  animation: uiVanishNext 175ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.slide.is-leaving-prev {
+  visibility: visible;
+  pointer-events: none;
+  z-index: 2;
+  animation: uiVanishPrev 175ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* Incoming section materializes from high-speed ki blur */
+.slide.is-entering-next {
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 4;
+  animation: uiArriveNext 340ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.slide.is-entering-prev {
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 4;
+  animation: uiArrivePrev 340ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes uiVanishNext {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-76px, 0, 0) scale(0.985);
+    filter: blur(11px);
+  }
+}
+
+@keyframes uiVanishPrev {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(76px, 0, 0) scale(0.985);
+    filter: blur(11px);
+  }
+}
+
+@keyframes uiArriveNext {
+  0% {
+    opacity: 0;
+    transform: translate3d(76px, 0, 0) scale(0.985);
+    filter: blur(12px) brightness(1.22);
+  }
+  35% {
+    opacity: 0.72;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0) brightness(1);
+  }
+}
+
+@keyframes uiArrivePrev {
+  0% {
+    opacity: 0;
+    transform: translate3d(-76px, 0, 0) scale(0.985);
+    filter: blur(12px) brightness(1.22);
+  }
+  35% {
+    opacity: 0.72;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0) brightness(1);
+  }
+}
+
+/* Ultra Instinct Instantaneous Speed-Streak Flash Overlay */
+.ui-speed-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(168, 85, 247, 0.08) 25%,
+      rgba(56, 189, 248, 0.14) 50%,
+      rgba(241, 245, 249, 0.12) 65%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 38px,
+      rgba(192, 132, 252, 0.13) 39px,
+      transparent 40px,
+      transparent 96px,
+      rgba(56, 189, 248, 0.15) 97px,
+      transparent 98px
+    );
+  will-change: transform, opacity;
+}
+
+[data-theme="light"] .ui-speed-flash {
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(14, 165, 233, 0.09) 25%,
+      rgba(124, 58, 237, 0.11) 50%,
+      rgba(37, 99, 235, 0.1) 68%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 38px,
+      rgba(14, 165, 233, 0.14) 39px,
+      transparent 40px,
+      transparent 96px,
+      rgba(124, 58, 237, 0.12) 97px,
+      transparent 98px
+    );
+}
+
+.ui-speed-flash.flash-next {
+  animation: uiSpeedStreakNext 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ui-speed-flash.flash-prev {
+  animation: uiSpeedStreakPrev 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes uiSpeedStreakNext {
+  0% {
+    opacity: 0;
+    transform: translate3d(90px, 0, 0) scaleX(1.12);
+  }
+  28% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-90px, 0, 0) scaleX(1);
+  }
+}
+
+@keyframes uiSpeedStreakPrev {
+  0% {
+    opacity: 0;
+    transform: translate3d(-90px, 0, 0) scaleX(1.12);
+  }
+  28% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(90px, 0, 0) scaleX(1);
+  }
 }
 
 .slide-inner {
