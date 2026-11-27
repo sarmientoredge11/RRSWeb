@@ -16,7 +16,6 @@ const projectCards = document.querySelectorAll(".project-card");
 
 let toastTimeout;
 let currentSlideIndex = 0;
-let wheelLocked = false;
 
 // Animate Levitating Ultra Instinct Goku Loading Screen FX (Stars, Ki Streaks & Rising Debris)
 const loaderFxCanvas = document.getElementById("ui-loader-fx");
@@ -280,7 +279,42 @@ if (themeToggle) {
   });
 }
 
-// Horizontal Slide Navigation Engine
+// Seamless Continuous Horizontal Scroll & Shortcut Navigation Engine
+let targetScrollX = 0;
+let smoothScrollRaf = null;
+
+function getMaxScrollX() {
+  if (!slidesViewport) return 0;
+  return Math.max(0, slidesViewport.scrollWidth - slidesViewport.clientWidth);
+}
+
+function getSlideScrollTarget(index) {
+  if (!slidesViewport || !slides[index]) return 0;
+  if (index === 0) return 0;
+  const slide = slides[index];
+  const centeredOffset =
+    slide.offsetLeft - Math.max(0, (slidesViewport.clientWidth - slide.offsetWidth) * 0.5);
+  return Math.max(0, Math.min(getMaxScrollX(), centeredOffset));
+}
+
+function updateActiveSlideFromScroll() {
+  if (!slidesViewport || slides.length === 0) return;
+  const viewportCenter = slidesViewport.scrollLeft + slidesViewport.clientWidth * 0.45;
+  let closestIdx = 0;
+  let minDist = Infinity;
+
+  slides.forEach((slide, idx) => {
+    const slideCenter = slide.offsetLeft + slide.offsetWidth * 0.5;
+    const dist = Math.abs(slideCenter - viewportCenter);
+    if (dist < minDist) {
+      minDist = dist;
+      closestIdx = idx;
+    }
+  });
+
+  syncActiveSlide(closestIdx);
+}
+
 function syncActiveSlide(index) {
   currentSlideIndex = Math.max(0, Math.min(slides.length - 1, index));
   const activeId = slides[currentSlideIndex]?.id || "bio";
@@ -304,14 +338,38 @@ function syncActiveSlide(index) {
   }
 }
 
+function stepSmoothScroll() {
+  if (!slidesViewport) {
+    smoothScrollRaf = null;
+    return;
+  }
+  const current = slidesViewport.scrollLeft;
+  const diff = targetScrollX - current;
+
+  if (Math.abs(diff) < 0.6) {
+    slidesViewport.scrollLeft = targetScrollX;
+    smoothScrollRaf = null;
+    updateActiveSlideFromScroll();
+    return;
+  }
+
+  slidesViewport.scrollLeft = current + diff * 0.14;
+  updateActiveSlideFromScroll();
+  smoothScrollRaf = requestAnimationFrame(stepSmoothScroll);
+}
+
+function startSmoothGlide(nextTargetX) {
+  targetScrollX = Math.max(0, Math.min(getMaxScrollX(), nextTargetX));
+  if (!smoothScrollRaf) {
+    smoothScrollRaf = requestAnimationFrame(stepSmoothScroll);
+  }
+}
+
 function goToSlideByIndex(index) {
   if (!slidesViewport || slides.length === 0) return;
-  const targetIndex = Math.max(0, Math.min(slides.length - 1, index));
-  syncActiveSlide(targetIndex);
-  slidesViewport.scrollTo({
-    left: targetIndex * slidesViewport.clientWidth,
-    behavior: "smooth"
-  });
+  const clamped = Math.max(0, Math.min(slides.length - 1, index));
+  syncActiveSlide(clamped);
+  startSmoothGlide(getSlideScrollTarget(clamped));
 }
 
 function goToSlideById(id) {
@@ -339,61 +397,56 @@ if (nextSlideBtn) {
   nextSlideBtn.addEventListener("click", () => goToSlideByIndex(currentSlideIndex + 1));
 }
 
-// Translate vertical mouse wheel into left-to-right section slides
+// Buttery-smooth continuous wheel-to-horizontal inertia (zero snap walls or locks)
 if (slidesViewport) {
   slidesViewport.addEventListener(
     "wheel",
     (e) => {
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      // Normalize wheel delta across mouse wheels (lines) and trackpads (pixels)
+      const factor = e.deltaMode === 1 ? 36 : e.deltaMode === 2 ? window.innerWidth : 1;
+      const dx = e.deltaX * factor;
+      const dy = e.deltaY * factor;
 
-      const activeSlide = slides[currentSlideIndex];
-      if (activeSlide) {
-        const canScrollDown =
-          e.deltaY > 0 &&
-          activeSlide.scrollTop + activeSlide.clientHeight < activeSlide.scrollHeight - 4;
-        const canScrollUp = e.deltaY < 0 && activeSlide.scrollTop > 4;
-        if (canScrollDown || canScrollUp) {
-          return; // Allow natural vertical scroll inside tall slides first
+      // If scrolling horizontally on a trackpad, let native momentum work seamlessly
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (smoothScrollRaf) {
+          cancelAnimationFrame(smoothScrollRaf);
+          smoothScrollRaf = null;
         }
+        targetScrollX = slidesViewport.scrollLeft;
+        return;
       }
 
       e.preventDefault();
-      if (wheelLocked || Math.abs(e.deltaY) < 12) return;
-
-      if (e.deltaY > 0 && currentSlideIndex < slides.length - 1) {
-        wheelLocked = true;
-        goToSlideByIndex(currentSlideIndex + 1);
-        setTimeout(() => {
-          wheelLocked = false;
-        }, 520);
-      } else if (e.deltaY < 0 && currentSlideIndex > 0) {
-        wheelLocked = true;
-        goToSlideByIndex(currentSlideIndex - 1);
-        setTimeout(() => {
-          wheelLocked = false;
-        }, 520);
+      if (!smoothScrollRaf) {
+        targetScrollX = slidesViewport.scrollLeft;
       }
+      startSmoothGlide(targetScrollX + dy * 1.15);
     },
     { passive: false }
   );
 
-  let scrollSyncTimer;
-  slidesViewport.addEventListener("scroll", () => {
-    clearTimeout(scrollSyncTimer);
-    scrollSyncTimer = setTimeout(() => {
-      if (slidesViewport.clientWidth > 0) {
-        const idx = Math.round(slidesViewport.scrollLeft / slidesViewport.clientWidth);
-        syncActiveSlide(idx);
+  slidesViewport.addEventListener(
+    "touchstart",
+    () => {
+      if (smoothScrollRaf) {
+        cancelAnimationFrame(smoothScrollRaf);
+        smoothScrollRaf = null;
       }
-    }, 60);
-  });
+    },
+    { passive: true }
+  );
 
-  window.addEventListener("resize", () => {
-    slidesViewport.scrollTo({
-      left: currentSlideIndex * slidesViewport.clientWidth,
-      behavior: "auto"
-    });
-  });
+  slidesViewport.addEventListener(
+    "scroll",
+    () => {
+      if (!smoothScrollRaf) {
+        targetScrollX = slidesViewport.scrollLeft;
+      }
+      updateActiveSlideFromScroll();
+    },
+    { passive: true }
+  );
 }
 
 // Left / Right Arrow Key Navigation (unless typing in an input)
