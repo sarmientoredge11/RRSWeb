@@ -2,12 +2,12 @@
 
 # Redge Rainier D. Sarmiento — Portfolio
 
-**Minimalist red-and-black personal portfolio website built with clean HTML, CSS, and JavaScript.**
+**Minimalist Ultra Instinct–inspired personal portfolio website built with clean HTML, CSS, and JavaScript.**
 
-[![Live Site](https://img.shields.io/badge/Live%20Site-RRSWeb-dc2626?style=for-the-badge&labelColor=0a0a0a)](https://sarmientoredge11.github.io/RRSWeb/)
-[![Stack](https://img.shields.io/badge/Stack-HTML5%20%C2%B7%20CSS3%20%C2%B7%20JS-dc2626?style=for-the-badge&labelColor=0a0a0a)](#-tech-stack)
-[![GitHub](https://img.shields.io/badge/GitHub-sarmientoredge11-dc2626?style=for-the-badge&logo=github&labelColor=0a0a0a)](https://github.com/sarmientoredge11)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Redge%20Sarmiento-dc2626?style=for-the-badge&logo=linkedin&labelColor=0a0a0a)](https://www.linkedin.com/in/redge-sarmiento-421b623b6/)
+[![Live Site](https://img.shields.io/badge/Live%20Site-RRSWeb-8b5cf6?style=for-the-badge&labelColor=070812)](https://sarmientoredge11.github.io/RRSWeb/)
+[![Stack](https://img.shields.io/badge/Stack-HTML5%20%C2%B7%20CSS3%20%C2%B7%20JS-38bdf8?style=for-the-badge&labelColor=070812)](#-tech-stack)
+[![GitHub](https://img.shields.io/badge/GitHub-sarmientoredge11-8b5cf6?style=for-the-badge&logo=github&labelColor=070812)](https://github.com/sarmientoredge11)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Redge%20Sarmiento-38bdf8?style=for-the-badge&logo=linkedin&labelColor=070812)](https://www.linkedin.com/in/redge-sarmiento-421b623b6/)
 
 [**Features**](#-features) · [**Sections**](#-sections) · [**Structure**](#-project-structure) · [**Getting Started**](#-getting-started) · [**Contact**](#-contact)
 
@@ -19,7 +19,7 @@
 
 A clean, responsive, and minimalist portfolio showcasing my academic background, technical skills, certifications, and projects as a **3rd-year BS Computer Science student** at **New Era University**.
 
-Designed around a **matte black (`#0a0a0a`)** and **crimson red (`#dc2626`)** palette with a seamless **Dark / Light mode** toggle.
+Styled around an **Ultra Instinct** dual theme—**UI Sign (`#070812` obsidian & cosmic violet `#a855f7`)** for Dark Mode and **Mastered Ultra Instinct (`#f2f6ff` silver-ice & celestial cyan `#0ea5e9`)** for Light Mode, complete with rising ki aura particles.
 
 ---
 

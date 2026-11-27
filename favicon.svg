@@ -1,15 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#0a0a0a" />
-  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="#dc2626" stroke-width="2.5" />
+  <defs>
+    <linearGradient id="uiGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="55%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#070812" />
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="url(#uiGrad)" stroke-width="2.5" />
   <text
     x="29"
     y="39"
     font-family="Inter, system-ui, -apple-system, sans-serif"
     font-size="18"
     font-weight="800"
-    fill="#f5f5f5"
+    fill="#f1f5f9"
     text-anchor="middle"
     letter-spacing="-0.5"
   >RRDS</text>
-  <circle cx="55.5" cy="36.5" r="3" fill="#dc2626" />
+  <circle cx="55.5" cy="36.5" r="3" fill="#38bdf8" />
 </svg>

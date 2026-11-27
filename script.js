@@ -21,10 +21,19 @@ function showToast(message) {
   }, 2400);
 }
 
+let auraSurge = 0;
+
 function updateThemeButton(theme) {
   if (!themeToggle) return;
-  const label = theme === "light" ? "Switch to dark mode" : "Switch to light mode";
+  const label =
+    theme === "light"
+      ? "Switch to Ultra Instinct Sign (Dark)"
+      : "Switch to Mastered Ultra Instinct (Light)";
   themeToggle.setAttribute("aria-label", label);
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) {
+    metaTheme.setAttribute("content", theme === "light" ? "#0ea5e9" : "#8b5cf6");
+  }
 }
 
 const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
@@ -37,7 +46,12 @@ if (themeToggle) {
     document.documentElement.setAttribute("data-theme", nextTheme);
     localStorage.setItem("theme", nextTheme);
     updateThemeButton(nextTheme);
-    showToast(`Switched to ${nextTheme} mode`);
+    auraSurge = 1;
+    showToast(
+      nextTheme === "light"
+        ? "Mastered Ultra Instinct (Light)"
+        : "Ultra Instinct Sign (Dark)"
+    );
   });
 }
 
@@ -450,5 +464,180 @@ if (trieInsertInput) {
     }
   });
 }
+
+// Ultra Instinct Rising Aura & Particle System
+const uiCanvas = document.getElementById("ui-particles");
+
+if (uiCanvas instanceof HTMLCanvasElement) {
+  const ctx = uiCanvas.getContext("2d");
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+
+  // Color palettes inspired by UI Sign (Dark) & Mastered UI (Light)
+  const uiPalettes = {
+    dark: [
+      { r: 168, g: 85, b: 247 },  // Cosmic Violet
+      { r: 192, g: 132, b: 252 }, // Orchid Glow
+      { r: 56, g: 189, b: 248 },  // Electric Ice Cyan
+      { r: 99, g: 102, b: 241 },  // Deep Indigo
+      { r: 241, g: 245, b: 249 }  // Silver-White Spark
+    ],
+    light: [
+      { r: 14, g: 165, b: 233 },  // Radiant Sky Cyan
+      { r: 37, g: 99, b: 235 },   // Celestial Sapphire
+      { r: 124, g: 58, b: 237 },  // Divine Iris Violet
+      { r: 139, g: 92, b: 246 },  // Luminous Amethyst
+      { r: 100, g: 116, b: 139 }  // Metallic Silver-Slate
+    ]
+  };
+
+  const sparks = [];
+  const wisps = [];
+
+  function resizeCanvas() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    uiCanvas.width = Math.floor(width * dpr);
+    uiCanvas.height = Math.floor(height * dpr);
+    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function createSpark(randomY = false) {
+    return {
+      x: Math.random() * width,
+      y: randomY ? Math.random() * height : height + Math.random() * 40,
+      radius: 1.2 + Math.random() * 2.8,
+      vy: -(0.45 + Math.random() * 1.15),
+      swayAmp: 0.25 + Math.random() * 0.65,
+      swayFreq: 0.008 + Math.random() * 0.016,
+      phase: Math.random() * Math.PI * 2,
+      alpha: 0.25 + Math.random() * 0.65,
+      colorIndex: Math.floor(Math.random() * 5),
+      isStar: Math.random() < 0.22
+    };
+  }
+
+  function createWisp(randomY = false) {
+    return {
+      x: Math.random() * width,
+      y: randomY ? Math.random() * height : height + 60 + Math.random() * 80,
+      len: 28 + Math.random() * 58,
+      thickness: 1.2 + Math.random() * 2.2,
+      vy: -(0.85 + Math.random() * 1.6),
+      drift: (Math.random() - 0.5) * 0.25,
+      alpha: 0.08 + Math.random() * 0.16,
+      colorIndex: Math.floor(Math.random() * 4)
+    };
+  }
+
+  resizeCanvas();
+
+  const sparkCount = Math.min(75, Math.max(42, Math.floor(width / 22)));
+  const wispCount = Math.min(22, Math.max(12, Math.floor(width / 75)));
+
+  for (let i = 0; i < sparkCount; i++) sparks.push(createSpark(true));
+  for (let i = 0; i < wispCount; i++) wisps.push(createWisp(true));
+
+  window.addEventListener("resize", resizeCanvas);
+
+  let tick = 0;
+
+  function drawFrame() {
+    if (!ctx) return;
+    tick++;
+
+    const theme = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+    const palette = uiPalettes[theme];
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.globalCompositeOperation = theme === "dark" ? "lighter" : "source-over";
+
+    if (auraSurge > 0.01) {
+      auraSurge *= 0.94;
+    } else {
+      auraSurge = 0;
+    }
+
+    const speedMultiplier = 1 + auraSurge * 3.2;
+
+    // 1. Rising Ultra Instinct Energy Wisps
+    for (let i = 0; i < wisps.length; i++) {
+      const w = wisps[i];
+      w.y += w.vy * speedMultiplier;
+      w.x += w.drift;
+
+      if (w.y + w.len < -20) {
+        Object.assign(w, createWisp(false));
+      }
+
+      const c = palette[w.colorIndex % palette.length];
+      const grad = ctx.createLinearGradient(w.x, w.y, w.x, w.y + w.len);
+      const peakAlpha = Math.min(0.45, w.alpha * (1 + auraSurge * 1.4));
+      grad.addColorStop(0, `rgba(${c.r}, ${c.g}, ${c.b}, 0)`);
+      grad.addColorStop(0.45, `rgba(${c.r}, ${c.g}, ${c.b}, ${peakAlpha})`);
+      grad.addColorStop(1, `rgba(${c.r}, ${c.g}, ${c.b}, 0)`);
+
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = w.thickness;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(w.x, w.y);
+      ctx.lineTo(w.x, w.y + w.len);
+      ctx.stroke();
+    }
+
+    // 2. Rising Luminous Ki Orbs & Star Glints
+    for (let i = 0; i < sparks.length; i++) {
+      const p = sparks[i];
+      p.y += p.vy * speedMultiplier;
+      p.x += Math.sin(tick * p.swayFreq + p.phase) * p.swayAmp;
+
+      if (p.y < -20) {
+        Object.assign(p, createSpark(false));
+      }
+      if (p.x < -20) p.x = width + 20;
+      if (p.x > width + 20) p.x = -20;
+
+      const c = palette[p.colorIndex % palette.length];
+      const twinkle = 0.65 + 0.35 * Math.sin(tick * 0.045 + p.phase);
+      const a = Math.min(0.95, p.alpha * twinkle * (1 + auraSurge * 0.6));
+      const glowRadius = p.radius * 3.6;
+
+      // Outer Aura Halo
+      const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius);
+      halo.addColorStop(0, theme === "dark" ? `rgba(255, 255, 255, ${a})` : `rgba(${c.r}, ${c.g}, ${c.b}, ${a})`);
+      halo.addColorStop(0.35, `rgba(${c.r}, ${c.g}, ${c.b}, ${a * 0.65})`);
+      halo.addColorStop(1, `rgba(${c.r}, ${c.g}, ${c.b}, 0)`);
+
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, glowRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Optional 4-Point Crystalline Glint Cross
+      if (p.isStar && twinkle > 0.78) {
+        const arm = p.radius * 3.2;
+        ctx.strokeStyle =
+          theme === "dark"
+            ? `rgba(248, 250, 252, ${a * 0.75})`
+            : `rgba(${c.r}, ${c.g}, ${c.b}, ${a * 0.7})`;
+        ctx.lineWidth = 0.9;
+        ctx.beginPath();
+        ctx.moveTo(p.x - arm, p.y);
+        ctx.lineTo(p.x + arm, p.y);
+        ctx.moveTo(p.x, p.y - arm);
+        ctx.lineTo(p.x, p.y + arm);
+        ctx.stroke();
+      }
+    }
+
+    requestAnimationFrame(drawFrame);
+  }
+
+  requestAnimationFrame(drawFrame);
+}
+
 
 
