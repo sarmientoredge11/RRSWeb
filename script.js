@@ -29,14 +29,13 @@ function triggerEyeGlare(theme) {
   if (!eyeOverlay) return;
   eyeOverlay.setAttribute("data-glare", theme);
   eyeOverlay.classList.remove("is-active");
-  // Force reflow so rapid theme toggles cleanly replay the eye-glare cut-in
   void eyeOverlay.offsetWidth;
   eyeOverlay.classList.add("is-active");
 
   clearTimeout(eyeGlareTimeout);
   eyeGlareTimeout = setTimeout(() => {
     eyeOverlay.classList.remove("is-active");
-  }, 1150);
+  }, 1180);
 }
 
 function updateThemeButton(theme) {
