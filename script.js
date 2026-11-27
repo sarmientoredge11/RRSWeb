@@ -18,29 +18,95 @@ let toastTimeout;
 let currentSlideIndex = 0;
 let wheelLocked = false;
 
-// Animate Loading Screen Aura Turbulence & Dismiss After 3 Seconds (+2s longer)
-const auraTurbulence = document.getElementById("uiAuraTurbulence");
-const auraDisplace = document.getElementById("uiAuraDisplace");
+// Animate Flowing Ultra Instinct Aura on Dedicated Canvas & Dismiss After 3 Seconds
+const loaderCanvas = document.getElementById("ui-loader-canvas");
 let loaderActive = true;
-let loaderFrame = 0;
 
-function animateLoaderAura() {
-  if (!loaderActive) return;
-  loaderFrame++;
-  const t = loaderFrame * 0.055;
-  if (auraTurbulence) {
-    const freqX = (0.015 + Math.sin(t) * 0.0045).toFixed(4);
-    const freqY = (0.04 + Math.cos(t * 1.35) * 0.009).toFixed(4);
-    auraTurbulence.setAttribute("baseFrequency", `${freqX} ${freqY}`);
+if (loaderCanvas instanceof HTMLCanvasElement) {
+  const lctx = loaderCanvas.getContext("2d");
+  const lDpr = Math.min(window.devicePixelRatio || 1, 2);
+  const cw = 280;
+  const ch = 360;
+  loaderCanvas.width = cw * lDpr;
+  loaderCanvas.height = ch * lDpr;
+  if (lctx) lctx.setTransform(lDpr, 0, 0, lDpr, 0, 0);
+
+  const auraImg = new Image();
+  auraImg.src = "assets/ui-aura.png";
+
+  // Rising sparkle trails inside the loader aura
+  const loaderSparks = Array.from({ length: 18 }, () => ({
+    x: cw * 0.5 + (Math.random() - 0.5) * 110,
+    y: 40 + Math.random() * (ch - 80),
+    vy: 1.4 + Math.random() * 1.8,
+    r: 1.4 + Math.random() * 1.8,
+    phase: Math.random() * Math.PI * 2
+  }));
+
+  const startTime = performance.now();
+
+  function renderLoaderAura(now) {
+    if (!loaderActive || !lctx) return;
+    const t = (now - startTime) * 0.001;
+    lctx.clearRect(0, 0, cw, ch);
+
+    if (auraImg.complete && auraImg.naturalWidth > 0) {
+      const iw = auraImg.naturalWidth;
+      const ih = auraImg.naturalHeight;
+      const drawW = 196;
+      const drawH = 328;
+      const baseX = (cw - drawW) * 0.5;
+      const baseY = (ch - drawH) * 0.5;
+      const slicePx = 2;
+
+      // Upward-traveling wave deformation across horizontal scanlines
+      const breathe = 1 + Math.sin(t * 3.4) * 0.035;
+      for (let py = 0; py < drawH; py += slicePx) {
+        const normY = py / drawH; // 0 = top crown, 1 = bottom base
+        const envelope = 0.35 + (1 - normY) * 0.65;
+        const waveX =
+          (Math.sin(normY * 10 - t * 6.2) * 5.5 +
+            Math.sin(normY * 19 - t * 9.5) * 2.4) *
+          envelope;
+        const widthWave =
+          breathe + Math.sin(normY * 8 - t * 5.0) * 0.055 * envelope;
+
+        const sy = (py / drawH) * ih;
+        const sh = (slicePx / drawH) * ih;
+        const sliceW = drawW * widthWave;
+        const dx = baseX + (drawW - sliceW) * 0.5 + waveX;
+
+        lctx.drawImage(auraImg, 0, sy, iw, sh, dx, baseY + py, sliceW, slicePx + 0.6);
+      }
+    }
+
+    // Rising white-cyan Ultra Instinct sparkle chains ascending through the aura
+    for (let i = 0; i < loaderSparks.length; i++) {
+      const sp = loaderSparks[i];
+      sp.y -= sp.vy;
+      if (sp.y < 28) {
+        sp.y = ch - 34;
+        sp.x = cw * 0.5 + (Math.random() - 0.5) * 110;
+      }
+      const fadeEdge = Math.sin(
+        Math.max(0, Math.min(1, (sp.y - 28) / (ch - 62))) * Math.PI
+      );
+      const alpha = fadeEdge * (0.65 + 0.35 * Math.sin(t * 7 + sp.phase));
+
+      for (let d = 0; d < 4; d++) {
+        const dotR = Math.max(0.5, sp.r * (1 - d * 0.22));
+        lctx.fillStyle = `rgba(240, 249, 255, ${alpha * (1 - d * 0.22)})`;
+        lctx.beginPath();
+        lctx.arc(sp.x, sp.y + d * 5.2, dotR, 0, Math.PI * 2);
+        lctx.fill();
+      }
+    }
+
+    requestAnimationFrame(renderLoaderAura);
   }
-  if (auraDisplace) {
-    const scale = (20 + Math.sin(t * 1.7) * 7).toFixed(1);
-    auraDisplace.setAttribute("scale", scale);
-  }
-  requestAnimationFrame(animateLoaderAura);
+
+  requestAnimationFrame(renderLoaderAura);
 }
-
-requestAnimationFrame(animateLoaderAura);
 
 function finishLoading() {
   if (!uiLoader || uiLoader.classList.contains("is-done")) return;

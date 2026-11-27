@@ -37,7 +37,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
   <script>
     (function () {
       const savedTheme = localStorage.getItem("theme");
@@ -49,38 +49,14 @@
 <body>
   <!-- Initial Ultra Instinct Loading Screen -->
   <div class="ui-loader" id="ui-loader" aria-label="Loading portfolio">
-    <!-- SVG Flame/Heat-Wave Filter for Flowing Aura -->
-    <svg class="ui-aura-svg-defs" width="0" height="0" aria-hidden="true">
-      <defs>
-        <filter id="uiAuraFlow" x="-25%" y="-25%" width="150%" height="150%">
-          <feTurbulence
-            id="uiAuraTurbulence"
-            type="fractalNoise"
-            baseFrequency="0.016 0.042"
-            numOctaves="3"
-            seed="4"
-            result="turbulence"
-          />
-          <feOffset id="uiAuraOffset" in="turbulence" dx="0" dy="0" result="shiftedNoise" />
-          <feDisplacementMap
-            id="uiAuraDisplace"
-            in="SourceGraphic"
-            in2="shiftedNoise"
-            scale="22"
-            xChannelSelector="R"
-            yChannelSelector="G"
-          />
-        </filter>
-      </defs>
-    </svg>
-
     <div class="ui-loader-stage">
-      <div class="ui-loader-aura" aria-hidden="true">
-        <img src="assets/ui-aura.png" alt="" class="ui-aura-layer ui-aura-glow" />
-        <img src="assets/ui-aura.png" alt="" class="ui-aura-layer ui-aura-main" />
-        <img src="assets/ui-aura.png" alt="" class="ui-aura-layer ui-aura-stream" />
-        <img src="assets/ui-aura.png" alt="" class="ui-aura-layer ui-aura-stream ui-aura-stream-alt" />
-      </div>
+      <canvas
+        id="ui-loader-canvas"
+        class="ui-loader-canvas"
+        width="280"
+        height="380"
+        aria-hidden="true"
+      ></canvas>
       <div class="ui-loader-core">
         <div class="ui-loader-ring" aria-hidden="true"></div>
         <span class="ui-loader-brand">RRDS<span class="accent">.</span></span>
@@ -747,6 +723,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
