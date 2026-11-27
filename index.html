@@ -49,10 +49,44 @@
 <body>
   <!-- Initial Ultra Instinct Loading Screen -->
   <div class="ui-loader" id="ui-loader" aria-label="Loading portfolio">
-    <div class="ui-loader-core">
-      <div class="ui-loader-ring" aria-hidden="true"></div>
-      <span class="ui-loader-brand">RRDS<span class="accent">.</span></span>
+    <!-- SVG Flame/Heat-Wave Filter for Flowing Aura -->
+    <svg class="ui-aura-svg-defs" width="0" height="0" aria-hidden="true">
+      <defs>
+        <filter id="uiAuraFlow" x="-25%" y="-25%" width="150%" height="150%">
+          <feTurbulence
+            id="uiAuraTurbulence"
+            type="fractalNoise"
+            baseFrequency="0.016 0.042"
+            numOctaves="3"
+            seed="4"
+            result="turbulence"
+          />
+          <feOffset id="uiAuraOffset" in="turbulence" dx="0" dy="0" result="shiftedNoise" />
+          <feDisplacementMap
+            id="uiAuraDisplace"
+            in="SourceGraphic"
+            in2="shiftedNoise"
+            scale="22"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </defs>
+    </svg>
+
+    <div class="ui-loader-stage">
+      <div class="ui-loader-aura" aria-hidden="true">
+        <img src="assets/ui-aura.png" alt="" class="ui-aura-layer ui-aura-glow" />
+        <img src="assets/ui-aura.png" alt="" class="ui-aura-layer ui-aura-main" />
+        <img src="assets/ui-aura.png" alt="" class="ui-aura-layer ui-aura-stream" />
+        <img src="assets/ui-aura.png" alt="" class="ui-aura-layer ui-aura-stream ui-aura-stream-alt" />
+      </div>
+      <div class="ui-loader-core">
+        <div class="ui-loader-ring" aria-hidden="true"></div>
+        <span class="ui-loader-brand">RRDS<span class="accent">.</span></span>
+      </div>
     </div>
+
     <div class="ui-loader-bar" aria-hidden="true">
       <div class="ui-loader-fill"></div>
     </div>

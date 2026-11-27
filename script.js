@@ -18,16 +18,42 @@ let toastTimeout;
 let currentSlideIndex = 0;
 let wheelLocked = false;
 
-// Dismiss Initial Loading Screen & Start on Bio
+// Animate Loading Screen Aura Turbulence & Dismiss After 3 Seconds (+2s longer)
+const auraTurbulence = document.getElementById("uiAuraTurbulence");
+const auraDisplace = document.getElementById("uiAuraDisplace");
+let loaderActive = true;
+let loaderFrame = 0;
+
+function animateLoaderAura() {
+  if (!loaderActive) return;
+  loaderFrame++;
+  const t = loaderFrame * 0.055;
+  if (auraTurbulence) {
+    const freqX = (0.015 + Math.sin(t) * 0.0045).toFixed(4);
+    const freqY = (0.04 + Math.cos(t * 1.35) * 0.009).toFixed(4);
+    auraTurbulence.setAttribute("baseFrequency", `${freqX} ${freqY}`);
+  }
+  if (auraDisplace) {
+    const scale = (20 + Math.sin(t * 1.7) * 7).toFixed(1);
+    auraDisplace.setAttribute("scale", scale);
+  }
+  requestAnimationFrame(animateLoaderAura);
+}
+
+requestAnimationFrame(animateLoaderAura);
+
 function finishLoading() {
   if (!uiLoader || uiLoader.classList.contains("is-done")) return;
   if (slidesViewport) {
     slidesViewport.scrollLeft = 0;
   }
   uiLoader.classList.add("is-done");
+  setTimeout(() => {
+    loaderActive = false;
+  }, 600);
 }
 
-setTimeout(finishLoading, 1000);
+setTimeout(finishLoading, 3000);
 
 function showToast(message) {
   if (!toast) return;
