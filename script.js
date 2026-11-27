@@ -39,34 +39,63 @@ if (loaderFxCanvas instanceof HTMLCanvasElement) {
   sizeLoaderFx();
   window.addEventListener("resize", sizeLoaderFx);
 
-  // 1. Twinkling 4-Point White Star Glints in the upper divine glow
-  const starGlints = Array.from({ length: 34 }, () => ({
+  // Theme-matched palettes for loader stars, ki streaks, hair bloom, and floating shards
+  const loaderThemes = {
+    dark: {
+      bloomInner: "168, 85, 247",
+      bloomOuter: "56, 189, 248",
+      colors: [
+        "168, 85, 247", // Cosmic Violet
+        "192, 132, 252", // Orchid Glow
+        "56, 189, 248", // Electric Ice Cyan
+        "241, 245, 249" // Silver-White
+      ],
+      shard: "139, 92, 246"
+    },
+    light: {
+      bloomInner: "14, 165, 233",
+      bloomOuter: "124, 58, 237",
+      colors: [
+        "14, 165, 233", // Radiant Sky Cyan
+        "37, 99, 235",  // Celestial Sapphire
+        "124, 58, 237", // Divine Iris Violet
+        "99, 102, 241"  // Luminous Indigo
+      ],
+      shard: "71, 85, 105"
+    }
+  };
+
+  // 1. Twinkling 4-Point Theme-Colored Star Glints
+  const starGlints = Array.from({ length: 38 }, (_, idx) => ({
     x: Math.random() * fw,
-    y: Math.random() * (fh * 0.44),
-    vy: -(0.15 + Math.random() * 0.35),
+    y: Math.random() * (fh * 0.55),
+    vy: -(0.2 + Math.random() * 0.45),
     size: 2.5 + Math.random() * 5.5,
     phase: Math.random() * Math.PI * 2,
-    speed: 2.5 + Math.random() * 3.5
+    speed: 2.5 + Math.random() * 3.5,
+    cIdx: idx % 4
   }));
 
-  // 2. Rising White Heat / Ki Streaks around Goku's silhouette
-  const kiStreaks = Array.from({ length: 18 }, () => ({
-    offsetX: (Math.random() - 0.5) * Math.min(220, fw * 0.36),
-    y: fh * (0.2 + Math.random() * 0.48),
-    len: 28 + Math.random() * 52,
-    vy: -(1.1 + Math.random() * 1.6),
-    alpha: 0.14 + Math.random() * 0.24
+  // 2. Rising Theme-Colored Ki Streaks around Goku's silhouette
+  const kiStreaks = Array.from({ length: 22 }, (_, idx) => ({
+    offsetX: (Math.random() - 0.5) * Math.min(240, fw * 0.38),
+    y: fh * (0.18 + Math.random() * 0.56),
+    len: 32 + Math.random() * 58,
+    vy: -(1.2 + Math.random() * 1.8),
+    alpha: 0.22 + Math.random() * 0.32,
+    cIdx: idx % 4
   }));
 
-  // 3. Slowly Levitating Dark Rock / Debris Shards rising from the ground
-  const debrisShards = Array.from({ length: 28 }, () => ({
-    x: fw * 0.5 + (Math.random() - 0.5) * Math.min(520, fw * 0.8),
-    y: fh * (0.55 + Math.random() * 0.45),
-    vy: -(0.35 + Math.random() * 0.75),
-    size: 2 + Math.random() * 4.2,
+  // 3. Slowly Levitating Shards / Sparks rising from the ground
+  const debrisShards = Array.from({ length: 28 }, (_, idx) => ({
+    x: fw * 0.5 + (Math.random() - 0.5) * Math.min(540, fw * 0.82),
+    y: fh * (0.5 + Math.random() * 0.5),
+    vy: -(0.45 + Math.random() * 0.85),
+    size: 2.2 + Math.random() * 4.2,
     rot: Math.random() * Math.PI * 2,
-    vRot: (Math.random() - 0.5) * 0.03,
-    alpha: 0.35 + Math.random() * 0.4
+    vRot: (Math.random() - 0.5) * 0.035,
+    alpha: 0.32 + Math.random() * 0.38,
+    cIdx: idx % 4
   }));
 
   const loaderStart = performance.now();
@@ -74,62 +103,82 @@ if (loaderFxCanvas instanceof HTMLCanvasElement) {
   function renderLoaderScene(now) {
     if (!loaderActive || !fctx) return;
     const t = (now - loaderStart) * 0.001;
-    fctx.clearRect(0, 0, fw, fh);
+    const mode =
+      document.documentElement.getAttribute("data-theme") === "light"
+        ? "light"
+        : "dark";
+    const pal = loaderThemes[mode];
 
-    // Subtle pulsing divine bloom behind Goku's hair (around y = 25%)
+    fctx.clearRect(0, 0, fw, fh);
+    fctx.globalCompositeOperation = mode === "dark" ? "lighter" : "source-over";
+
+    // Pulsing theme-colored aura halo behind Goku (hair & torso)
     const cx = fw * 0.5;
-    const cy = fh * 0.25;
-    const bloomRadius = Math.min(fw, fh) * 0.22;
-    const bloomAlpha = 0.16 + 0.1 * Math.sin(t * 3.2);
+    const cy = fh * 0.34;
+    const bloomRadius = Math.min(fw, fh) * 0.34;
+    const bloomAlpha = 0.22 + 0.1 * Math.sin(t * 3.2);
     const bloom = fctx.createRadialGradient(cx, cy, 0, cx, cy, bloomRadius);
-    bloom.addColorStop(0, `rgba(255, 255, 255, ${bloomAlpha})`);
-    bloom.addColorStop(1, "rgba(255, 255, 255, 0)");
+    bloom.addColorStop(0, `rgba(${pal.bloomInner}, ${bloomAlpha})`);
+    bloom.addColorStop(0.55, `rgba(${pal.bloomOuter}, ${bloomAlpha * 0.55})`);
+    bloom.addColorStop(1, `rgba(${pal.bloomOuter}, 0)`);
     fctx.fillStyle = bloom;
     fctx.beginPath();
     fctx.arc(cx, cy, bloomRadius, 0, Math.PI * 2);
     fctx.fill();
 
-    // Draw Rising Ki Streaks around center silhouette
+    // Draw Rising Theme-Colored Ki Streaks around center silhouette
     for (let i = 0; i < kiStreaks.length; i++) {
       const s = kiStreaks[i];
       s.y += s.vy;
-      if (s.y + s.len < fh * 0.14) {
-        s.y = fh * 0.65;
-        s.offsetX = (Math.random() - 0.5) * Math.min(220, fw * 0.36);
+      if (s.y + s.len < fh * 0.12) {
+        s.y = fh * 0.78;
+        s.offsetX = (Math.random() - 0.5) * Math.min(240, fw * 0.38);
       }
       const sx = cx + s.offsetX;
+      const col = pal.colors[s.cIdx];
       const g = fctx.createLinearGradient(sx, s.y, sx, s.y + s.len);
-      g.addColorStop(0, "rgba(255, 255, 255, 0)");
-      g.addColorStop(0.5, `rgba(255, 255, 255, ${s.alpha})`);
-      g.addColorStop(1, "rgba(255, 255, 255, 0)");
+      g.addColorStop(0, `rgba(${col}, 0)`);
+      g.addColorStop(0.5, `rgba(${col}, ${s.alpha})`);
+      g.addColorStop(1, `rgba(${col}, 0)`);
       fctx.strokeStyle = g;
-      fctx.lineWidth = 1.6;
+      fctx.lineWidth = 1.8;
       fctx.beginPath();
       fctx.moveTo(sx, s.y);
       fctx.lineTo(sx, s.y + s.len);
       fctx.stroke();
     }
 
-    // Draw Twinkling 4-Point Star Glints in the upper sky
+    // Draw Twinkling 4-Point Theme-Colored Star Glints
     for (let i = 0; i < starGlints.length; i++) {
       const st = starGlints[i];
       st.y += st.vy;
       if (st.y < -10) {
-        st.y = fh * 0.44;
+        st.y = fh * 0.55;
         st.x = Math.random() * fw;
       }
-      const twinkle = 0.35 + 0.65 * Math.pow(0.5 + 0.5 * Math.sin(t * st.speed + st.phase), 2);
+      const col = pal.colors[st.cIdx];
+      const twinkle =
+        0.3 + 0.7 * Math.pow(0.5 + 0.5 * Math.sin(t * st.speed + st.phase), 2);
       const r = st.size * (0.7 + 0.4 * twinkle);
 
-      const glow = fctx.createRadialGradient(st.x, st.y, 0, st.x, st.y, r * 1.8);
-      glow.addColorStop(0, `rgba(255, 255, 255, ${twinkle})`);
-      glow.addColorStop(1, "rgba(255, 255, 255, 0)");
+      const glow = fctx.createRadialGradient(st.x, st.y, 0, st.x, st.y, r * 2.1);
+      glow.addColorStop(
+        0,
+        mode === "dark"
+          ? `rgba(255, 255, 255, ${twinkle})`
+          : `rgba(${col}, ${twinkle})`
+      );
+      glow.addColorStop(0.45, `rgba(${col}, ${twinkle * 0.65})`);
+      glow.addColorStop(1, `rgba(${col}, 0)`);
       fctx.fillStyle = glow;
       fctx.beginPath();
-      fctx.arc(st.x, st.y, r * 1.8, 0, Math.PI * 2);
+      fctx.arc(st.x, st.y, r * 2.1, 0, Math.PI * 2);
       fctx.fill();
 
-      fctx.strokeStyle = `rgba(255, 255, 255, ${twinkle * 0.9})`;
+      fctx.strokeStyle =
+        mode === "dark"
+          ? `rgba(248, 250, 252, ${twinkle * 0.88})`
+          : `rgba(${col}, ${twinkle * 0.85})`;
       fctx.lineWidth = 1.1;
       fctx.beginPath();
       fctx.moveTo(st.x - r, st.y);
@@ -139,22 +188,23 @@ if (loaderFxCanvas instanceof HTMLCanvasElement) {
       fctx.stroke();
     }
 
-    // Draw Slowly Rising Dark Debris Shards in the lower half
+    // Draw Slowly Levitating Theme-Tinted Shards in the lower half
     for (let i = 0; i < debrisShards.length; i++) {
       const d = debrisShards[i];
       d.y += d.vy;
       d.rot += d.vRot;
-      if (d.y < fh * 0.48) {
+      if (d.y < fh * 0.45) {
         d.y = fh + 10;
-        d.x = fw * 0.5 + (Math.random() - 0.5) * Math.min(520, fw * 0.8);
+        d.x = fw * 0.5 + (Math.random() - 0.5) * Math.min(540, fw * 0.82);
       }
       const fade = Math.sin(
-        Math.max(0, Math.min(1, (d.y - fh * 0.48) / (fh * 0.52))) * Math.PI
+        Math.max(0, Math.min(1, (d.y - fh * 0.45) / (fh * 0.55))) * Math.PI
       );
+      const shardCol = mode === "dark" ? pal.colors[d.cIdx] : pal.shard;
       fctx.save();
       fctx.translate(d.x, d.y);
       fctx.rotate(d.rot);
-      fctx.fillStyle = `rgba(34, 42, 54, ${d.alpha * fade})`;
+      fctx.fillStyle = `rgba(${shardCol}, ${d.alpha * fade})`;
       fctx.beginPath();
       fctx.moveTo(-d.size, d.size * 0.6);
       fctx.lineTo(0, -d.size);

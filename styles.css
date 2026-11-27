@@ -87,20 +87,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Initial Ultra Instinct Loading Screen (Animated Levitating Silhouette) */
+/* Initial Ultra Instinct Loading Screen (Theme-Matched Live Wallpaper Style) */
 .ui-loader {
   position: fixed;
   inset: 0;
   z-index: 120;
-  background: linear-gradient(
-    180deg,
-    #fefefe 0%,
-    #989fa9 20%,
-    #55616f 40%,
-    #414d5d 60%,
-    #404c5c 80%,
-    #414d5d 100%
-  );
+  background-color: var(--bg);
+  background-image: var(--aura-backdrop);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,28 +122,25 @@ body {
 }
 
 .ui-loader-goku {
-  height: 100%;
+  position: relative;
+  z-index: 2;
+  height: 96%;
   width: auto;
   max-width: none;
   object-fit: contain;
   user-select: none;
-  -webkit-mask-image: radial-gradient(
-    ellipse 46% 49% at 50% 50%,
-    #000000 66%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(
-    ellipse 46% 49% at 50% 50%,
-    #000000 66%,
-    transparent 100%
-  );
   will-change: transform, filter;
-  animation: ui-goku-levitate 2.4s ease-in-out infinite alternate;
+  animation: ui-goku-levitate-dark 2.4s ease-in-out infinite alternate;
+}
+
+[data-theme="light"] .ui-loader-goku {
+  animation-name: ui-goku-levitate-light;
 }
 
 .ui-loader-fx {
   position: absolute;
   inset: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
   pointer-events: none;
@@ -170,15 +160,14 @@ body {
   font-weight: 800;
   font-size: 1.15rem;
   letter-spacing: 0.04em;
-  color: #f8fafc;
-  text-shadow: 0 2px 14px rgba(7, 8, 18, 0.65);
+  color: var(--text);
 }
 
 .ui-loader-bar {
   width: 190px;
   height: 3px;
   border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.22);
+  background-color: var(--border);
   overflow: hidden;
 }
 
@@ -186,20 +175,39 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #e0f2fe 0%, #ffffff 50%, #bae6fd 100%);
-  box-shadow: 0 0 14px #ffffff;
+  background: var(--accent-gradient);
+  box-shadow: 0 0 14px var(--accent);
   transform-origin: left;
   animation: ui-loader-progress 2950ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-@keyframes ui-goku-levitate {
+@keyframes ui-goku-levitate-dark {
   0% {
     transform: translateY(6px) scale(1.01);
-    filter: brightness(1) contrast(1.02);
+    filter:
+      drop-shadow(0 0 16px rgba(168, 85, 247, 0.65))
+      drop-shadow(0 0 34px rgba(56, 189, 248, 0.38));
   }
   100% {
     transform: translateY(-8px) scale(1.035);
-    filter: brightness(1.07) contrast(1.05) drop-shadow(0 -6px 22px rgba(255, 255, 255, 0.32));
+    filter:
+      drop-shadow(0 0 24px rgba(192, 132, 252, 0.88))
+      drop-shadow(0 0 48px rgba(56, 189, 248, 0.58));
+  }
+}
+
+@keyframes ui-goku-levitate-light {
+  0% {
+    transform: translateY(6px) scale(1.01);
+    filter:
+      drop-shadow(0 0 14px rgba(14, 165, 233, 0.72))
+      drop-shadow(0 0 30px rgba(124, 58, 237, 0.45));
+  }
+  100% {
+    transform: translateY(-8px) scale(1.035);
+    filter:
+      drop-shadow(0 0 22px rgba(14, 165, 233, 0.95))
+      drop-shadow(0 0 44px rgba(124, 58, 237, 0.65));
   }
 }
 

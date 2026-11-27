@@ -37,7 +37,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
   <script>
     (function () {
       const savedTheme = localStorage.getItem("theme");
@@ -50,12 +50,12 @@
   <!-- Initial Ultra Instinct Loading Screen -->
   <div class="ui-loader" id="ui-loader" aria-label="Loading portfolio">
     <div class="ui-loader-scene" aria-hidden="true">
+      <canvas id="ui-loader-fx" class="ui-loader-fx"></canvas>
       <img
-        src="assets/ui-loader-goku.jpg"
+        src="assets/ui-loader-goku.png"
         alt=""
         class="ui-loader-goku"
       />
-      <canvas id="ui-loader-fx" class="ui-loader-fx"></canvas>
     </div>
 
     <div class="ui-loader-hud">
@@ -721,6 +721,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>
