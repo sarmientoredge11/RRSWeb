@@ -47,6 +47,17 @@
   </script>
 </head>
 <body>
+  <!-- Initial Ultra Instinct Loading Screen -->
+  <div class="ui-loader" id="ui-loader" aria-label="Loading portfolio">
+    <div class="ui-loader-core">
+      <div class="ui-loader-ring" aria-hidden="true"></div>
+      <span class="ui-loader-brand">RRDS<span class="accent">.</span></span>
+    </div>
+    <div class="ui-loader-bar" aria-hidden="true">
+      <div class="ui-loader-fill"></div>
+    </div>
+  </div>
+
   <!-- Ultra Instinct Aura & Rising Particle Canvas -->
   <div class="ui-aura-backdrop" aria-hidden="true"></div>
   <canvas id="ui-particles" class="ui-particles" aria-hidden="true"></canvas>
@@ -157,102 +168,137 @@
     </div>
   </div>
 
-  <header class="site-header">
-    <nav class="nav container" aria-label="Primary Navigation">
-      <a href="#top" class="brand" aria-label="Home">
-        RRDS<span class="accent">.</span>
-      </a>
+  <!-- Floating Brand Mark -->
+  <a href="#bio" class="floating-brand" data-slide-link="bio" aria-label="Go to Bio">
+    RRDS<span class="accent">.</span>
+  </a>
 
-      <div class="nav-controls">
-        <ul class="nav-links" id="nav-links">
-          <li><a href="#education">Education</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#certifications">Certifications</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#contact" class="nav-cta">Contact</a></li>
-        </ul>
+  <!-- Side Icon Shortcut Dock (Icons Only, Full Name Pops Up on Hover) -->
+  <nav class="side-dock" id="side-dock" aria-label="Section Shortcuts">
+    <a href="#bio" class="dock-item is-active" data-slide-link="bio" aria-label="Bio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+      <span class="dock-label">Bio</span>
+    </a>
 
-        <button
-          class="theme-toggle"
-          id="theme-toggle"
-          type="button"
-          aria-label="Switch to light mode"
-          title="Toggle color theme"
-        >
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-          </svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-        </button>
+    <a href="#education" class="dock-item" data-slide-link="education" aria-label="Education">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+        <path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5" />
+      </svg>
+      <span class="dock-label">Education</span>
+    </a>
 
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-label="Toggle navigation menu"
-          aria-expanded="false"
-          aria-controls="nav-links"
-        >
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-    </nav>
-  </header>
+    <a href="#skills" class="dock-item" data-slide-link="skills" aria-label="Skills">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+      <span class="dock-label">Skills</span>
+    </a>
 
-  <main id="top">
-    <!-- Hero Section -->
-    <section class="hero container">
-      <h1>Redge Rainier D. Sarmiento</h1>
-      <div class="hero-badges">
-        <p class="eyebrow">3rd Year CS Student &bull; Open to Work</p>
-        <span class="location-tag">Quezon City, PH</span>
-      </div>
-      <p class="hero-bio">
-        BS Computer Science student at New Era University.
-        I build clean web apps, work with databases, and test software.
-      </p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn btn-primary">
-          <span>Contact Me</span>
-          <span class="btn-icon" aria-hidden="true">&rarr;</span>
-        </a>
-        <a
-          href="Redge_Rainier_Sarmiento_Resume.pdf"
-          download="Redge_Rainier_Sarmiento_Resume.pdf"
-          class="btn btn-secondary"
-        >
-          <span>Resume (PDF)</span>
-          <span class="btn-icon" aria-hidden="true">&darr;</span>
-        </a>
-        <a href="#projects" class="btn btn-secondary">
-          <span>Projects</span>
-        </a>
-        <a
-          href="https://github.com/sarmientoredge11"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-secondary"
-        >
-          <span>GitHub</span>
-          <span class="btn-arrow" aria-hidden="true">&nearr;</span>
-        </a>
-        <a
-          href="https://www.linkedin.com/in/redge-sarmiento-421b623b6/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-secondary"
-        >
-          <span>LinkedIn</span>
-          <span class="btn-arrow" aria-hidden="true">&nearr;</span>
-        </a>
+    <a href="#certifications" class="dock-item" data-slide-link="certifications" aria-label="Certifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="8" r="6" />
+        <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+      </svg>
+      <span class="dock-label">Certifications</span>
+    </a>
+
+    <a href="#projects" class="dock-item" data-slide-link="projects" aria-label="Projects">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+      </svg>
+      <span class="dock-label">Projects</span>
+    </a>
+
+    <a href="#contact" class="dock-item" data-slide-link="contact" aria-label="Contact">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </svg>
+      <span class="dock-label">Contact</span>
+    </a>
+
+    <span class="dock-divider" aria-hidden="true"></span>
+
+    <button
+      class="dock-item theme-toggle"
+      id="theme-toggle"
+      type="button"
+      aria-label="Switch to Mastered Ultra Instinct (Light)"
+    >
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+      <span class="dock-label" id="theme-dock-label">Light Mode</span>
+    </button>
+  </nav>
+
+  <!-- Horizontal Left-to-Right Slides Viewport -->
+  <main class="slides-viewport" id="slides-viewport">
+    <!-- Slide 1: Bio Section -->
+    <section id="bio" class="slide is-current">
+      <div class="slide-inner hero container">
+        <h1>Redge Rainier D. Sarmiento</h1>
+        <div class="hero-badges">
+          <p class="eyebrow">3rd Year CS Student &bull; Open to Work</p>
+          <span class="location-tag">Quezon City, PH</span>
+        </div>
+        <p class="hero-bio">
+          BS Computer Science student at New Era University.
+          I build clean web apps, work with databases, and test software.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" data-slide-link="contact" class="btn btn-primary">
+            <span>Contact Me</span>
+            <span class="btn-icon" aria-hidden="true">&rarr;</span>
+          </a>
+          <a
+            href="Redge_Rainier_Sarmiento_Resume.pdf"
+            download="Redge_Rainier_Sarmiento_Resume.pdf"
+            class="btn btn-secondary"
+          >
+            <span>Resume (PDF)</span>
+            <span class="btn-icon" aria-hidden="true">&darr;</span>
+          </a>
+          <a href="#projects" data-slide-link="projects" class="btn btn-secondary">
+            <span>Projects</span>
+          </a>
+          <a
+            href="https://github.com/sarmientoredge11"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary"
+          >
+            <span>GitHub</span>
+            <span class="btn-arrow" aria-hidden="true">&nearr;</span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/redge-sarmiento-421b623b6/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary"
+          >
+            <span>LinkedIn</span>
+            <span class="btn-arrow" aria-hidden="true">&nearr;</span>
+          </a>
+        </div>
       </div>
     </section>
 
-    <!-- Education Section -->
-    <section id="education" class="section container">
+    <!-- Slide 2: Education Section -->
+    <section id="education" class="slide">
+      <div class="slide-inner section container">
       <div class="section-header">
         <h2>Education</h2>
         <span class="mono-tag">Graduating July 2028</span>
@@ -281,10 +327,12 @@
           </ul>
         </div>
       </div>
+      </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="section container">
+    <!-- Slide 3: Skills Section -->
+    <section id="skills" class="slide">
+      <div class="slide-inner section container">
       <div class="section-header">
         <h2>Skills</h2>
       </div>
@@ -320,10 +368,12 @@
           </ul>
         </div>
       </div>
+      </div>
     </section>
 
-    <!-- Certifications Section -->
-    <section id="certifications" class="section container">
+    <!-- Slide 4: Certifications Section -->
+    <section id="certifications" class="slide">
+      <div class="slide-inner section container">
       <div class="section-header">
         <h2>Certifications</h2>
       </div>
@@ -396,10 +446,12 @@
           </div>
         </a>
       </div>
+      </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section container">
+    <!-- Slide 5: Projects Section -->
+    <section id="projects" class="slide">
+      <div class="slide-inner section container">
       <div class="section-header">
         <h2>Projects</h2>
       </div>
@@ -571,10 +623,12 @@
           <span>Steps: <strong id="trie-nodes-visited">0</strong> vs <strong id="trie-bf-scanned">0</strong> scanned</span>
         </div>
       </div>
+      </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section container">
+    <!-- Slide 6: Contact Section -->
+    <section id="contact" class="slide">
+      <div class="slide-inner section container">
       <div class="section-header">
         <h2>Contact</h2>
         <span class="mono-tag">Open to Work</span>
@@ -639,24 +693,25 @@
           </a>
         </div>
       </div>
+      <footer class="slide-footer">
+        <p>&copy; 2026 Redge Rainier D. Sarmiento</p>
+      </footer>
+      </div>
     </section>
   </main>
 
-  <button
-    type="button"
-    class="back-to-top"
-    id="back-to-top"
-    aria-label="Scroll back to top"
-    title="Back to top"
-  >
-    &uarr;
-  </button>
+  <!-- Subtle Horizontal Slide Controls -->
+  <div class="slide-controls" aria-label="Slide navigation">
+    <button type="button" class="slide-arrow-btn" id="prev-slide-btn" aria-label="Previous section" disabled>
+      &larr;
+    </button>
+    <span class="slide-counter" id="slide-counter">1 / 6</span>
+    <button type="button" class="slide-arrow-btn" id="next-slide-btn" aria-label="Next section">
+      &rarr;
+    </button>
+  </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <footer class="site-footer container">
-    <p>&copy; 2026 Redge Rainier D. Sarmiento</p>
-  </footer>
 
   <script src="script.js"></script>
 </body>

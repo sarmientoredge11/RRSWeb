@@ -1,15 +1,33 @@
-const navToggle = document.querySelector(".nav-toggle");
-const navLinks = document.querySelector(".nav-links");
+const uiLoader = document.getElementById("ui-loader");
+const slidesViewport = document.getElementById("slides-viewport");
+const slides = Array.from(document.querySelectorAll(".slide"));
+const dockLinks = document.querySelectorAll('.side-dock a[data-slide-link]');
+const allSlideLinks = document.querySelectorAll('[data-slide-link]');
+const prevSlideBtn = document.getElementById("prev-slide-btn");
+const nextSlideBtn = document.getElementById("next-slide-btn");
+const slideCounter = document.getElementById("slide-counter");
 const copyEmailBtn = document.getElementById("copy-email-btn");
 const copyEmailText = document.getElementById("copy-email-text");
 const themeToggle = document.getElementById("theme-toggle");
-const backToTopBtn = document.getElementById("back-to-top");
+const themeDockLabel = document.getElementById("theme-dock-label");
 const toast = document.getElementById("toast");
 const skillPills = document.querySelectorAll(".pill[data-skill]");
 const projectCards = document.querySelectorAll(".project-card");
-const sections = document.querySelectorAll("main section[id]");
 
 let toastTimeout;
+let currentSlideIndex = 0;
+let wheelLocked = false;
+
+// Dismiss Initial Loading Screen & Start on Bio
+function finishLoading() {
+  if (!uiLoader || uiLoader.classList.contains("is-done")) return;
+  if (slidesViewport) {
+    slidesViewport.scrollLeft = 0;
+  }
+  uiLoader.classList.add("is-done");
+}
+
+setTimeout(finishLoading, 1000);
 
 function showToast(message) {
   if (!toast) return;
@@ -30,6 +48,9 @@ function updateThemeButton(theme) {
       ? "Switch to Ultra Instinct Sign (Dark)"
       : "Switch to Mastered Ultra Instinct (Light)";
   themeToggle.setAttribute("aria-label", label);
+  if (themeDockLabel) {
+    themeDockLabel.textContent = theme === "light" ? "Dark Mode" : "Light Mode";
+  }
   const metaTheme = document.querySelector('meta[name="theme-color"]');
   if (metaTheme) {
     metaTheme.setAttribute("content", theme === "light" ? "#0ea5e9" : "#8b5cf6");
@@ -55,19 +76,134 @@ if (themeToggle) {
   });
 }
 
-if (navToggle && navLinks) {
-  navToggle.addEventListener("click", () => {
-    const isOpen = navLinks.classList.toggle("is-open");
-    navToggle.setAttribute("aria-expanded", String(isOpen));
+// Horizontal Slide Navigation Engine
+function syncActiveSlide(index) {
+  currentSlideIndex = Math.max(0, Math.min(slides.length - 1, index));
+  const activeId = slides[currentSlideIndex]?.id || "bio";
+
+  slides.forEach((slide, idx) => {
+    slide.classList.toggle("is-current", idx === currentSlideIndex);
   });
 
-  navLinks.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      navLinks.classList.remove("is-open");
-      navToggle.setAttribute("aria-expanded", "false");
+  dockLinks.forEach((link) => {
+    link.classList.toggle("is-active", link.dataset.slideLink === activeId);
+  });
+
+  if (slideCounter) {
+    slideCounter.textContent = `${currentSlideIndex + 1} / ${slides.length}`;
+  }
+  if (prevSlideBtn) {
+    prevSlideBtn.disabled = currentSlideIndex === 0;
+  }
+  if (nextSlideBtn) {
+    nextSlideBtn.disabled = currentSlideIndex === slides.length - 1;
+  }
+}
+
+function goToSlideByIndex(index) {
+  if (!slidesViewport || slides.length === 0) return;
+  const targetIndex = Math.max(0, Math.min(slides.length - 1, index));
+  syncActiveSlide(targetIndex);
+  slidesViewport.scrollTo({
+    left: targetIndex * slidesViewport.clientWidth,
+    behavior: "smooth"
+  });
+}
+
+function goToSlideById(id) {
+  const idx = slides.findIndex((s) => s.id === id);
+  if (idx !== -1) {
+    goToSlideByIndex(idx);
+  }
+}
+
+allSlideLinks.forEach((link) => {
+  link.addEventListener("click", (e) => {
+    const targetId = link.getAttribute("data-slide-link");
+    if (targetId) {
+      e.preventDefault();
+      goToSlideById(targetId);
+    }
+  });
+});
+
+if (prevSlideBtn) {
+  prevSlideBtn.addEventListener("click", () => goToSlideByIndex(currentSlideIndex - 1));
+}
+
+if (nextSlideBtn) {
+  nextSlideBtn.addEventListener("click", () => goToSlideByIndex(currentSlideIndex + 1));
+}
+
+// Translate vertical mouse wheel into left-to-right section slides
+if (slidesViewport) {
+  slidesViewport.addEventListener(
+    "wheel",
+    (e) => {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+
+      const activeSlide = slides[currentSlideIndex];
+      if (activeSlide) {
+        const canScrollDown =
+          e.deltaY > 0 &&
+          activeSlide.scrollTop + activeSlide.clientHeight < activeSlide.scrollHeight - 4;
+        const canScrollUp = e.deltaY < 0 && activeSlide.scrollTop > 4;
+        if (canScrollDown || canScrollUp) {
+          return; // Allow natural vertical scroll inside tall slides first
+        }
+      }
+
+      e.preventDefault();
+      if (wheelLocked || Math.abs(e.deltaY) < 12) return;
+
+      if (e.deltaY > 0 && currentSlideIndex < slides.length - 1) {
+        wheelLocked = true;
+        goToSlideByIndex(currentSlideIndex + 1);
+        setTimeout(() => {
+          wheelLocked = false;
+        }, 520);
+      } else if (e.deltaY < 0 && currentSlideIndex > 0) {
+        wheelLocked = true;
+        goToSlideByIndex(currentSlideIndex - 1);
+        setTimeout(() => {
+          wheelLocked = false;
+        }, 520);
+      }
+    },
+    { passive: false }
+  );
+
+  let scrollSyncTimer;
+  slidesViewport.addEventListener("scroll", () => {
+    clearTimeout(scrollSyncTimer);
+    scrollSyncTimer = setTimeout(() => {
+      if (slidesViewport.clientWidth > 0) {
+        const idx = Math.round(slidesViewport.scrollLeft / slidesViewport.clientWidth);
+        syncActiveSlide(idx);
+      }
+    }, 60);
+  });
+
+  window.addEventListener("resize", () => {
+    slidesViewport.scrollTo({
+      left: currentSlideIndex * slidesViewport.clientWidth,
+      behavior: "auto"
     });
   });
 }
+
+// Left / Right Arrow Key Navigation (unless typing in an input)
+window.addEventListener("keydown", (e) => {
+  const tag = document.activeElement?.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA") return;
+  if (e.key === "ArrowRight") {
+    e.preventDefault();
+    goToSlideByIndex(currentSlideIndex + 1);
+  } else if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    goToSlideByIndex(currentSlideIndex - 1);
+  }
+});
 
 if (copyEmailBtn) {
   copyEmailBtn.addEventListener("click", async () => {
@@ -90,7 +226,7 @@ if (copyEmailBtn) {
   });
 }
 
-// Interactive Skill Pills -> Highlight Matching Projects
+// Interactive Skill Pills -> Highlight Matching Projects & Slide to Projects
 skillPills.forEach((pill) => {
   pill.addEventListener("click", () => {
     const skill = pill.dataset.skill || "";
@@ -113,7 +249,7 @@ skillPills.forEach((pill) => {
     });
 
     if (matchCount > 0) {
-      document.getElementById("projects")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      goToSlideById("projects");
       showToast(`Highlighted ${matchCount} project${matchCount > 1 ? "s" : ""} using ${skill}`);
     } else {
       showToast(`Core skill: ${skill}`);
@@ -121,36 +257,7 @@ skillPills.forEach((pill) => {
   });
 });
 
-// Back to Top & Active Section Highlighting
-window.addEventListener("scroll", () => {
-  if (backToTopBtn) {
-    backToTopBtn.classList.toggle("is-visible", window.scrollY > 320);
-  }
-});
-
-if (backToTopBtn) {
-  backToTopBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-}
-
-if ("IntersectionObserver" in window && navLinks) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute("id");
-          navLinks.querySelectorAll("a").forEach((link) => {
-            link.classList.toggle("is-active", link.getAttribute("href") === `#${id}`);
-          });
-        }
-      });
-    },
-    { rootMargin: "-35% 0px -55% 0px" }
-  );
-
-  sections.forEach((sec) => observer.observe(sec));
-}
+syncActiveSlide(0);
 
 // Randomly Cycling Slanted Background Words (matched-size pools prevent layout shift)
 const wordPools = {
