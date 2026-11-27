@@ -18,94 +18,156 @@ let toastTimeout;
 let currentSlideIndex = 0;
 let wheelLocked = false;
 
-// Animate Flowing Ultra Instinct Aura on Dedicated Canvas & Dismiss After 3 Seconds
-const loaderCanvas = document.getElementById("ui-loader-canvas");
+// Animate Levitating Ultra Instinct Goku Loading Screen FX (Stars, Ki Streaks & Rising Debris)
+const loaderFxCanvas = document.getElementById("ui-loader-fx");
 let loaderActive = true;
 
-if (loaderCanvas instanceof HTMLCanvasElement) {
-  const lctx = loaderCanvas.getContext("2d");
-  const lDpr = Math.min(window.devicePixelRatio || 1, 2);
-  const cw = 280;
-  const ch = 360;
-  loaderCanvas.width = cw * lDpr;
-  loaderCanvas.height = ch * lDpr;
-  if (lctx) lctx.setTransform(lDpr, 0, 0, lDpr, 0, 0);
+if (loaderFxCanvas instanceof HTMLCanvasElement) {
+  const fctx = loaderFxCanvas.getContext("2d");
+  let fw = window.innerWidth;
+  let fh = window.innerHeight;
+  const fDpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  const auraImg = new Image();
-  auraImg.src = "assets/ui-aura.png";
-
-  // Rising sparkle trails inside the loader aura
-  const loaderSparks = Array.from({ length: 18 }, () => ({
-    x: cw * 0.5 + (Math.random() - 0.5) * 110,
-    y: 40 + Math.random() * (ch - 80),
-    vy: 1.4 + Math.random() * 1.8,
-    r: 1.4 + Math.random() * 1.8,
-    phase: Math.random() * Math.PI * 2
-  }));
-
-  const startTime = performance.now();
-
-  function renderLoaderAura(now) {
-    if (!loaderActive || !lctx) return;
-    const t = (now - startTime) * 0.001;
-    lctx.clearRect(0, 0, cw, ch);
-
-    if (auraImg.complete && auraImg.naturalWidth > 0) {
-      const iw = auraImg.naturalWidth;
-      const ih = auraImg.naturalHeight;
-      const drawW = 196;
-      const drawH = 328;
-      const baseX = (cw - drawW) * 0.5;
-      const baseY = (ch - drawH) * 0.5;
-      const slicePx = 2;
-
-      // Upward-traveling wave deformation across horizontal scanlines
-      const breathe = 1 + Math.sin(t * 3.4) * 0.035;
-      for (let py = 0; py < drawH; py += slicePx) {
-        const normY = py / drawH; // 0 = top crown, 1 = bottom base
-        const envelope = 0.35 + (1 - normY) * 0.65;
-        const waveX =
-          (Math.sin(normY * 10 - t * 6.2) * 5.5 +
-            Math.sin(normY * 19 - t * 9.5) * 2.4) *
-          envelope;
-        const widthWave =
-          breathe + Math.sin(normY * 8 - t * 5.0) * 0.055 * envelope;
-
-        const sy = (py / drawH) * ih;
-        const sh = (slicePx / drawH) * ih;
-        const sliceW = drawW * widthWave;
-        const dx = baseX + (drawW - sliceW) * 0.5 + waveX;
-
-        lctx.drawImage(auraImg, 0, sy, iw, sh, dx, baseY + py, sliceW, slicePx + 0.6);
-      }
-    }
-
-    // Rising white-cyan Ultra Instinct sparkle chains ascending through the aura
-    for (let i = 0; i < loaderSparks.length; i++) {
-      const sp = loaderSparks[i];
-      sp.y -= sp.vy;
-      if (sp.y < 28) {
-        sp.y = ch - 34;
-        sp.x = cw * 0.5 + (Math.random() - 0.5) * 110;
-      }
-      const fadeEdge = Math.sin(
-        Math.max(0, Math.min(1, (sp.y - 28) / (ch - 62))) * Math.PI
-      );
-      const alpha = fadeEdge * (0.65 + 0.35 * Math.sin(t * 7 + sp.phase));
-
-      for (let d = 0; d < 4; d++) {
-        const dotR = Math.max(0.5, sp.r * (1 - d * 0.22));
-        lctx.fillStyle = `rgba(240, 249, 255, ${alpha * (1 - d * 0.22)})`;
-        lctx.beginPath();
-        lctx.arc(sp.x, sp.y + d * 5.2, dotR, 0, Math.PI * 2);
-        lctx.fill();
-      }
-    }
-
-    requestAnimationFrame(renderLoaderAura);
+  function sizeLoaderFx() {
+    fw = window.innerWidth;
+    fh = window.innerHeight;
+    loaderFxCanvas.width = Math.floor(fw * fDpr);
+    loaderFxCanvas.height = Math.floor(fh * fDpr);
+    if (fctx) fctx.setTransform(fDpr, 0, 0, fDpr, 0, 0);
   }
 
-  requestAnimationFrame(renderLoaderAura);
+  sizeLoaderFx();
+  window.addEventListener("resize", sizeLoaderFx);
+
+  // 1. Twinkling 4-Point White Star Glints in the upper divine glow
+  const starGlints = Array.from({ length: 34 }, () => ({
+    x: Math.random() * fw,
+    y: Math.random() * (fh * 0.44),
+    vy: -(0.15 + Math.random() * 0.35),
+    size: 2.5 + Math.random() * 5.5,
+    phase: Math.random() * Math.PI * 2,
+    speed: 2.5 + Math.random() * 3.5
+  }));
+
+  // 2. Rising White Heat / Ki Streaks around Goku's silhouette
+  const kiStreaks = Array.from({ length: 18 }, () => ({
+    offsetX: (Math.random() - 0.5) * Math.min(220, fw * 0.36),
+    y: fh * (0.2 + Math.random() * 0.48),
+    len: 28 + Math.random() * 52,
+    vy: -(1.1 + Math.random() * 1.6),
+    alpha: 0.14 + Math.random() * 0.24
+  }));
+
+  // 3. Slowly Levitating Dark Rock / Debris Shards rising from the ground
+  const debrisShards = Array.from({ length: 28 }, () => ({
+    x: fw * 0.5 + (Math.random() - 0.5) * Math.min(520, fw * 0.8),
+    y: fh * (0.55 + Math.random() * 0.45),
+    vy: -(0.35 + Math.random() * 0.75),
+    size: 2 + Math.random() * 4.2,
+    rot: Math.random() * Math.PI * 2,
+    vRot: (Math.random() - 0.5) * 0.03,
+    alpha: 0.35 + Math.random() * 0.4
+  }));
+
+  const loaderStart = performance.now();
+
+  function renderLoaderScene(now) {
+    if (!loaderActive || !fctx) return;
+    const t = (now - loaderStart) * 0.001;
+    fctx.clearRect(0, 0, fw, fh);
+
+    // Subtle pulsing divine bloom behind Goku's hair (around y = 25%)
+    const cx = fw * 0.5;
+    const cy = fh * 0.25;
+    const bloomRadius = Math.min(fw, fh) * 0.22;
+    const bloomAlpha = 0.16 + 0.1 * Math.sin(t * 3.2);
+    const bloom = fctx.createRadialGradient(cx, cy, 0, cx, cy, bloomRadius);
+    bloom.addColorStop(0, `rgba(255, 255, 255, ${bloomAlpha})`);
+    bloom.addColorStop(1, "rgba(255, 255, 255, 0)");
+    fctx.fillStyle = bloom;
+    fctx.beginPath();
+    fctx.arc(cx, cy, bloomRadius, 0, Math.PI * 2);
+    fctx.fill();
+
+    // Draw Rising Ki Streaks around center silhouette
+    for (let i = 0; i < kiStreaks.length; i++) {
+      const s = kiStreaks[i];
+      s.y += s.vy;
+      if (s.y + s.len < fh * 0.14) {
+        s.y = fh * 0.65;
+        s.offsetX = (Math.random() - 0.5) * Math.min(220, fw * 0.36);
+      }
+      const sx = cx + s.offsetX;
+      const g = fctx.createLinearGradient(sx, s.y, sx, s.y + s.len);
+      g.addColorStop(0, "rgba(255, 255, 255, 0)");
+      g.addColorStop(0.5, `rgba(255, 255, 255, ${s.alpha})`);
+      g.addColorStop(1, "rgba(255, 255, 255, 0)");
+      fctx.strokeStyle = g;
+      fctx.lineWidth = 1.6;
+      fctx.beginPath();
+      fctx.moveTo(sx, s.y);
+      fctx.lineTo(sx, s.y + s.len);
+      fctx.stroke();
+    }
+
+    // Draw Twinkling 4-Point Star Glints in the upper sky
+    for (let i = 0; i < starGlints.length; i++) {
+      const st = starGlints[i];
+      st.y += st.vy;
+      if (st.y < -10) {
+        st.y = fh * 0.44;
+        st.x = Math.random() * fw;
+      }
+      const twinkle = 0.35 + 0.65 * Math.pow(0.5 + 0.5 * Math.sin(t * st.speed + st.phase), 2);
+      const r = st.size * (0.7 + 0.4 * twinkle);
+
+      const glow = fctx.createRadialGradient(st.x, st.y, 0, st.x, st.y, r * 1.8);
+      glow.addColorStop(0, `rgba(255, 255, 255, ${twinkle})`);
+      glow.addColorStop(1, "rgba(255, 255, 255, 0)");
+      fctx.fillStyle = glow;
+      fctx.beginPath();
+      fctx.arc(st.x, st.y, r * 1.8, 0, Math.PI * 2);
+      fctx.fill();
+
+      fctx.strokeStyle = `rgba(255, 255, 255, ${twinkle * 0.9})`;
+      fctx.lineWidth = 1.1;
+      fctx.beginPath();
+      fctx.moveTo(st.x - r, st.y);
+      fctx.lineTo(st.x + r, st.y);
+      fctx.moveTo(st.x, st.y - r);
+      fctx.lineTo(st.x, st.y + r);
+      fctx.stroke();
+    }
+
+    // Draw Slowly Rising Dark Debris Shards in the lower half
+    for (let i = 0; i < debrisShards.length; i++) {
+      const d = debrisShards[i];
+      d.y += d.vy;
+      d.rot += d.vRot;
+      if (d.y < fh * 0.48) {
+        d.y = fh + 10;
+        d.x = fw * 0.5 + (Math.random() - 0.5) * Math.min(520, fw * 0.8);
+      }
+      const fade = Math.sin(
+        Math.max(0, Math.min(1, (d.y - fh * 0.48) / (fh * 0.52))) * Math.PI
+      );
+      fctx.save();
+      fctx.translate(d.x, d.y);
+      fctx.rotate(d.rot);
+      fctx.fillStyle = `rgba(34, 42, 54, ${d.alpha * fade})`;
+      fctx.beginPath();
+      fctx.moveTo(-d.size, d.size * 0.6);
+      fctx.lineTo(0, -d.size);
+      fctx.lineTo(d.size * 0.85, d.size * 0.4);
+      fctx.closePath();
+      fctx.fill();
+      fctx.restore();
+    }
+
+    requestAnimationFrame(renderLoaderScene);
+  }
+
+  requestAnimationFrame(renderLoaderScene);
 }
 
 function finishLoading() {
@@ -116,7 +178,7 @@ function finishLoading() {
   uiLoader.classList.add("is-done");
   setTimeout(() => {
     loaderActive = false;
-  }, 600);
+  }, 650);
 }
 
 setTimeout(finishLoading, 3000);

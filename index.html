@@ -37,7 +37,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=3" />
   <script>
     (function () {
       const savedTheme = localStorage.getItem("theme");
@@ -49,22 +49,20 @@
 <body>
   <!-- Initial Ultra Instinct Loading Screen -->
   <div class="ui-loader" id="ui-loader" aria-label="Loading portfolio">
-    <div class="ui-loader-stage">
-      <canvas
-        id="ui-loader-canvas"
-        class="ui-loader-canvas"
-        width="280"
-        height="380"
-        aria-hidden="true"
-      ></canvas>
-      <div class="ui-loader-core">
-        <div class="ui-loader-ring" aria-hidden="true"></div>
-        <span class="ui-loader-brand">RRDS<span class="accent">.</span></span>
-      </div>
+    <div class="ui-loader-scene" aria-hidden="true">
+      <img
+        src="assets/ui-loader-goku.jpg"
+        alt=""
+        class="ui-loader-goku"
+      />
+      <canvas id="ui-loader-fx" class="ui-loader-fx"></canvas>
     </div>
 
-    <div class="ui-loader-bar" aria-hidden="true">
-      <div class="ui-loader-fill"></div>
+    <div class="ui-loader-hud">
+      <span class="ui-loader-brand">RRDS<span class="accent">.</span></span>
+      <div class="ui-loader-bar" aria-hidden="true">
+        <div class="ui-loader-fill"></div>
+      </div>
     </div>
   </div>
 
@@ -723,6 +721,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
